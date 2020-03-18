@@ -131,8 +131,7 @@
                         <version>2.0.13</version>
                         <configuration>
                             <processTypes>
-                                <web>java $JAVA_OPTS -jar target/healthcheckteam-0.0.1-SNAPSHOT.jar
-                                    --server.port=$PORT
+                                <web>java $JAVA_OPTS -jar -Dserver.port=$PORT target/healthcheckteam-0.0.1-SNAPSHOT.jar
                                 </web>
                             </processTypes>
                         </configuration>
