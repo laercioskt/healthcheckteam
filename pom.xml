@@ -91,7 +91,7 @@
                 <artifactId>heroku-maven-plugin</artifactId>
                 <version>2.0.13</version>
                 <configuration>
-                    <appName>health-check-team</appName>
+<!--                    <appName>health-check-team</appName>-->
                     <processTypes>
                         <web>java $JAVA_OPTS -jar target/healthcheckteam-0.0.1-SNAPSHOT.jar --server.port=$PORT</web>
                     </processTypes>
