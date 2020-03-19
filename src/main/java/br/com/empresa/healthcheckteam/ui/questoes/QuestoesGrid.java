@@ -17,7 +17,7 @@ public class QuestoesGrid extends Grid<Questao> {
 
         setSizeFull();
 
-        addColumn(Questao::getDescricao).setHeader("Descrição").setFlexGrow(20).setSortable(true).setKey("descricao");
+        addColumn(Questao::getDescricao).setHeader("Question name").setFlexGrow(20).setSortable(true).setKey("descricao");
 
         // If the browser window size changes, check if all columns fit on
         // screen

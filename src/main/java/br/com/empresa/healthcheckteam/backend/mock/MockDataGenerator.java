@@ -5,6 +5,9 @@ import br.com.empresa.healthcheckteam.backend.data.*;
 import java.math.BigDecimal;
 import java.util.*;
 
+import static java.util.Arrays.stream;
+import static java.util.stream.Collectors.toList;
+
 public class MockDataGenerator {
     private static int nextQuestaoId = 1;
     private static int nextTimeId = 1;
@@ -12,15 +15,21 @@ public class MockDataGenerator {
     private static int nextProductId = 1;
     private static final Random random = new Random(1);
 
-    private static final String timesNames[] = new String[]{
-            "Children's books", "Best sellers", "Romance", "Mystery",
-            "Thriller", "Sci-fi", "Non-fiction", "Cookbooks"};
+    private static final String[] timesNames = new String[]{"XTeam", "UX", "DevOps", "Ame Digital", "Claro"};
 
-    private static final String questoesDescricoes[] = new String[]{
-            "Children's books", "Best sellers", "Romance", "Mystery",
-            "Thriller", "Sci-fi", "Non-fiction", "Cookbooks"};
+    private static final String[] questoesDescricoes = new String[]{
+            "Motivação e Propósito: O time está motivado? As pessoas estão engajadas? As pessoas entendem o propósito do seu trabalho? Sinto que...",
+            "Empoderamento e Autonomia do time: o time tem autonomia para decidir no que é mais importante para trabalhar no momento? O time consegue atuar em bloqueios e riscos? O time depende de outros times para fazer seu trabalho? O time se responsabiliza pelos acertos e erros? Sinto que...",
+            "Satisfação do Cliente: Você acha que o seu trabalho atende as necessidades do cliente? O cliente está feliz com as entregas? Sinto que...",
+            "Colaboração do Time: Trabalho frequente junto com alguém da equipe (exemplo: pair programming), com revezamento de colegas e tarefas? O time está engajado em trocar informação e ajudar um ao outro? Pode-se contar com os membros do time para auxílio? Sinto que...",
+            "Excelência técnica: As pessoas com quem trabalho mandam bem? Sinto que...",
+            "Desenvolvimento Ágil: Fazemos as cerimônias que precisamos para termos entregas com qualidade? Usamos as cerimônias para fazer a melhoria contínua?Daily, Retrospectiva, Ronda, Pair Programming, Code Review, Alfa cruzado/Demonstração da Feature, Refactoring, Testes Automatizados. Sinto que...",
+            "Processo Objective: O time conhece e segue o processo Objective?Obs: Quebra das tarefas em 3 níveis, orçamento por complexidade, retroalimentação do T-Shirt, indicadores, WIP Limitado, Fluxo contínuo. Sinto que...",
+            "Entrega Contínua: Commitamos continuamente nosso código? Temos sempre um build “pronto” para produção? Meus commits entram automaticamente em produção? Sinto que...",
+            "Qualitividade: Temos “slack” focado em melhoria de código? Atuamos ativamente para diminuir a complexidade do produto? Nossas ações melhoram a produtividade? Obs: automatizar mecanismos periféricos não é qualitividade. Sinto que..."
+    };
 
-    private static final String categoryNames[] = new String[]{
+    private static final String[] categoryNames = new String[]{
             "Children's books", "Best sellers", "Romance", "Mystery",
             "Thriller", "Sci-fi", "Non-fiction", "Cookbooks"};
 
@@ -43,22 +52,11 @@ public class MockDataGenerator {
             "elephants", "keeping your wife happy"};
 
     static List<Time> createTimes() {
-        List<Time> times = new ArrayList<Time>();
-        for (String name : timesNames) {
-            Time c = createTime(name);
-            times.add(c);
-        }
-        return times;
-
+        return stream(timesNames).map(MockDataGenerator::createTime).collect(toList());
     }
 
     static List<Questao> createQuestoes() {
-        List<Questao> questoes = new ArrayList<Questao>();
-        for (String descricao : questoesDescricoes) {
-            Questao q = createQuestao(descricao);
-            questoes.add(q);
-        }
-        return questoes;
+        return stream(questoesDescricoes).map(MockDataGenerator::createQuestao).collect(toList());
 
     }
 

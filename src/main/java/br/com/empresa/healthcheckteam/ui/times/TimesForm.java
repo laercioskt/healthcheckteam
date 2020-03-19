@@ -39,7 +39,7 @@ public class TimesForm extends Div {
 
         viewLogic = sampleCrudLogic;
 
-        timeName = new TextField("Time name");
+        timeName = new TextField("Team name");
         timeName.setWidth("100%");
         timeName.setRequired(true);
         timeName.setValueChangeMode(ValueChangeMode.EAGER);

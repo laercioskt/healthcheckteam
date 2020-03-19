@@ -16,6 +16,7 @@ import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.dependency.CssImport;
+import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.html.Span;
@@ -43,6 +44,7 @@ import com.vaadin.flow.theme.lumo.Lumo;
 @Route
 public class MainLayout extends AppLayout implements RouterLayout {
 
+    private final Label title = new Label("Health Check Team");
     private final Button logoutButton;
 
     public MainLayout() {
@@ -66,22 +68,16 @@ public class MainLayout extends AppLayout implements RouterLayout {
                 "img/table-logo.png", VaadinSession.getCurrent().getBrowser());
 
         final Image image = new Image(resolvedImage, "");
-        final Label title = new Label("Health Check Team");
         top.add(image, title);
         top.add(title);
         addToNavbar(top);
 
         // Navigation items
-        addToDrawer(createMenuLink(QuestoesView.class, QuestoesView.VIEW_NAME, VaadinIcon.QUESTION.create()));
         addToDrawer(createMenuLink(TimesView.class, TimesView.VIEW_NAME, VaadinIcon.HAND.create()));
-
-        addToDrawer(createMenuLink(HealthCheckTeamView.class, HealthCheckTeamView.VIEW_NAME,
-                VaadinIcon.ENVELOPE.create()));
-
+        addToDrawer(createMenuLink(QuestoesView.class, QuestoesView.VIEW_NAME, VaadinIcon.QUESTION.create()));
+        addToDrawer(createMenuLink(HealthCheckTeamView.class, HealthCheckTeamView.VIEW_NAME, VaadinIcon.ENVELOPE.create()));
         addToDrawer(createMenuLink(InventoryView.class, InventoryView.VIEW_NAME, VaadinIcon.EDIT.create()));
-
-        addToDrawer(createMenuLink(AboutView.class, AboutView.VIEW_NAME,
-                VaadinIcon.INFO_CIRCLE.create()));
+        addToDrawer(createMenuLink(AboutView.class, AboutView.VIEW_NAME, VaadinIcon.INFO_CIRCLE.create()));
 
         // Create logout button but don't add it yet; admin view might be added
         // in between (see #onAttach())
@@ -95,14 +91,16 @@ public class MainLayout extends AppLayout implements RouterLayout {
         AccessControlFactory.getInstance().createAccessControl().signOut();
     }
 
-    private RouterLink createMenuLink(Class<? extends Component> viewClass,
-                                      String caption, Icon icon) {
+    private Div createMenuLink(Class<? extends Component> viewClass, String caption, Icon icon) {
         final RouterLink routerLink = new RouterLink(null, viewClass);
         routerLink.setClassName("menu-link");
         routerLink.add(icon);
         routerLink.add(new Span(caption));
         icon.setSize("24px");
-        return routerLink;
+
+        Div div = new Div(routerLink);
+        div.addClickListener(event -> title.setText("Health Check Team - " + caption));
+        return div;
     }
 
     private Button createMenuButton(String caption, Icon icon) {
@@ -117,10 +115,8 @@ public class MainLayout extends AppLayout implements RouterLayout {
     private void registerAdminViewIfApplicable(AccessControl accessControl) {
         // register the admin view dynamically only for any admin user logged in
         if (accessControl.isUserInRole(AccessControl.ADMIN_ROLE_NAME)
-                && !RouteConfiguration.forSessionScope()
-                .isRouteRegistered(AdminView.class)) {
-            RouteConfiguration.forSessionScope().setRoute(AdminView.VIEW_NAME,
-                    AdminView.class, MainLayout.class);
+                && !RouteConfiguration.forSessionScope().isRouteRegistered(AdminView.class)) {
+            RouteConfiguration.forSessionScope().setRoute(AdminView.VIEW_NAME, AdminView.class, MainLayout.class);
             // as logout will purge the session route registry, no need to
             // unregister the view on logout
         }
@@ -131,12 +127,10 @@ public class MainLayout extends AppLayout implements RouterLayout {
         super.onAttach(attachEvent);
 
         // User can quickly activate logout with Ctrl+L
-        attachEvent.getUI().addShortcutListener(() -> logout(), Key.KEY_L,
-                KeyModifier.CONTROL);
+        attachEvent.getUI().addShortcutListener(this::logout, Key.KEY_L, KeyModifier.CONTROL);
 
         // add the admin view menu item if user has admin role
-        final AccessControl accessControl = AccessControlFactory.getInstance()
-                .createAccessControl();
+        final AccessControl accessControl = AccessControlFactory.getInstance().createAccessControl();
         if (accessControl.isUserInRole(AccessControl.ADMIN_ROLE_NAME)) {
 
             // Create extra navigation target for admins
@@ -144,8 +138,7 @@ public class MainLayout extends AppLayout implements RouterLayout {
 
             // The link can only be created now, because the RouterLink checks
             // that the target is valid.
-            addToDrawer(createMenuLink(AdminView.class, AdminView.VIEW_NAME,
-                    VaadinIcon.DOCTOR.create()));
+            addToDrawer(createMenuLink(AdminView.class, AdminView.VIEW_NAME, VaadinIcon.DOCTOR.create()));
         }
 
         // Finally, add logout button for all users

@@ -17,7 +17,7 @@ public class TimesGrid extends Grid<Time> {
 
         setSizeFull();
 
-        addColumn(Time::getTimeName).setHeader("Time name").setFlexGrow(20).setSortable(true).setKey("timename");
+        addColumn(Time::getTimeName).setHeader("Team name").setFlexGrow(20).setSortable(true).setKey("timename");
 
         // If the browser window size changes, check if all columns fit on
         // screen

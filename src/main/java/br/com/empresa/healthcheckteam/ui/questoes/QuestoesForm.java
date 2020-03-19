@@ -40,7 +40,7 @@ public class QuestoesForm extends Div {
 
         viewLogic = sampleCrudLogic;
 
-        descricao = new TextArea("Descrição");
+        descricao = new TextArea("Question description");
         descricao.setWidth("100%");
         descricao.setRequired(true);
         descricao.setValueChangeMode(ValueChangeMode.EAGER);

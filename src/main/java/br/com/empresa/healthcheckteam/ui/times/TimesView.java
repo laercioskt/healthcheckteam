@@ -20,10 +20,10 @@ import com.vaadin.flow.router.*;
  * operations and controlling the view based on events from outside.
  */
 @Route(value = "Times", layout = MainLayout.class)
-@RouteAlias(value = "Times", layout = MainLayout.class)
+@RouteAlias(value = "", layout = MainLayout.class)
 public class TimesView extends HorizontalLayout implements HasUrlParameter<String> {
 
-    public static final String VIEW_NAME = "Times";
+    public static final String VIEW_NAME = "Teams";
 
     private final TimesGrid grid;
     private final TimesForm form;
@@ -59,14 +59,14 @@ public class TimesView extends HorizontalLayout implements HasUrlParameter<Strin
 
     public HorizontalLayout createTopBar() {
         filter = new TextField();
-        filter.setPlaceholder("Filter name");
+        filter.setPlaceholder("Filter by team name");
         // Apply the filter to grid's data provider. TextField value is never
         filter.addValueChangeListener(
                 event -> dataProvider.setFilter(event.getValue()));
         // A shortcut to focus on the textField by pressing ctrl + F
         filter.addFocusShortcut(Key.KEY_F, KeyModifier.CONTROL);
 
-        newTime = new Button("New time");
+        newTime = new Button("New team");
         // Setting theme variant of new timeion button to LUMO_PRIMARY that
         // changes its background color to blue and its text color to white
         newTime.addThemeVariants(ButtonVariant.LUMO_PRIMARY);

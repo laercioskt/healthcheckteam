@@ -35,8 +35,7 @@ public class LoginScreen extends FlexLayout {
         // login form, centered in the available part of the screen
         LoginForm loginForm = new LoginForm();
         loginForm.addLoginListener(this::login);
-        loginForm.addForgotPasswordListener(
-                event -> Notification.show("Hint: same as username"));
+        loginForm.addForgotPasswordListener(event -> Notification.show("Hint: same as username"));
 
         // layout to center login form when there is sufficient screen space
         FlexLayout centeringLayout = new FlexLayout();
@@ -56,12 +55,9 @@ public class LoginScreen extends FlexLayout {
         VerticalLayout loginInformation = new VerticalLayout();
         loginInformation.setClassName("login-information");
 
-        H1 loginInfoHeader = new H1("Login Information");
+        H1 loginInfoHeader = new H1("Health Check Team");
         loginInfoHeader.setWidth("100%");
-        Span loginInfoText = new Span(
-                "Log in as \"admin\" to have full access. Log in with any " +
-                        "other username to have read-only access. For all " +
-                        "users, the password is same as the username.");
+        Span loginInfoText = new Span("A dinâmica que mede a saúde de um Time!");
         loginInfoText.setWidth("100%");
         loginInformation.add(loginInfoHeader);
         loginInformation.add(loginInfoText);

@@ -21,7 +21,7 @@ import com.vaadin.flow.router.*;
  * operations and controlling the view based on events from outside.
  */
 @Route(value = "HealthCheckTeam", layout = MainLayout.class)
-@RouteAlias(value = "", layout = MainLayout.class)
+@RouteAlias(value = "HealthCheckTeam", layout = MainLayout.class)
 public class HealthCheckTeamView extends HorizontalLayout implements HasUrlParameter<String> {
 
     public static final String VIEW_NAME = "Health Check Team";

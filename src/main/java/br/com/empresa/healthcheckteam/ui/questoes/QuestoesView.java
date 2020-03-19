@@ -23,7 +23,7 @@ import com.vaadin.flow.router.*;
 @RouteAlias(value = "Questoes", layout = MainLayout.class)
 public class QuestoesView extends HorizontalLayout implements HasUrlParameter<String> {
 
-    public static final String VIEW_NAME = "Questões";
+    public static final String VIEW_NAME = "Questions";
 
     private final QuestoesGrid grid;
     private final QuestoesForm form;
@@ -59,13 +59,13 @@ public class QuestoesView extends HorizontalLayout implements HasUrlParameter<St
 
     public HorizontalLayout createTopBar() {
         filter = new TextField();
-        filter.setPlaceholder("Filtro descrição");
+        filter.setPlaceholder("Filter by question name");
         // Apply the filter to grid's data provider. TextField value is never
         filter.addValueChangeListener(event -> dataProvider.setFilter(event.getValue()));
         // A shortcut to focus on the textField by pressing ctrl + F
         filter.addFocusShortcut(Key.KEY_F, KeyModifier.CONTROL);
 
-        newQuestao = new Button("Nova Questão");
+        newQuestao = new Button("New Question");
         // Setting theme variant of new production button to LUMO_PRIMARY that
         // changes its background color to blue and its text color to white
         newQuestao.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
