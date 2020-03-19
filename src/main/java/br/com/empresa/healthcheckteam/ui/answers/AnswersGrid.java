@@ -1,23 +1,23 @@
-package br.com.empresa.healthcheckteam.ui.questoes;
+package br.com.empresa.healthcheckteam.ui.answers;
 
-import br.com.empresa.healthcheckteam.backend.data.Questao;
+import br.com.empresa.healthcheckteam.backend.data.Answer;
 import com.vaadin.flow.component.AttachEvent;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.notification.Notification;
 
 /**
- * Grid of questoes, handling the visual presentation and filtering of a set of
+ * Grid of answers, handling the visual presentation and filtering of a set of
  * items. This version uses an in-memory data source that is suitable for small
  * data sets.
  */
-public class QuestoesGrid extends Grid<Questao> {
+public class AnswersGrid extends Grid<Answer> {
 
-    public QuestoesGrid() {
+    public AnswersGrid() {
 
         setSizeFull();
 
-        addColumn(Questao::getDescricao).setHeader("Question description").setFlexGrow(20).setSortable(true).setKey("descricao");
+        addColumn(Answer::getAnswer).setHeader("Answer description").setFlexGrow(20).setSortable(true).setKey("answer");
 
         // If the browser window size changes, check if all columns fit on
         // screen
@@ -27,11 +27,11 @@ public class QuestoesGrid extends Grid<Questao> {
 
     private void setColumnVisibility(int width) {
         if (width > 800) {
-            getColumnByKey("descricao").setVisible(true);
+            getColumnByKey("answer").setVisible(true);
         } else if (width > 550) {
-            getColumnByKey("descricao").setVisible(true);
+            getColumnByKey("answer").setVisible(true);
         } else {
-            getColumnByKey("descricao").setVisible(true);
+            getColumnByKey("answer").setVisible(true);
         }
     }
 
@@ -46,13 +46,13 @@ public class QuestoesGrid extends Grid<Questao> {
         });
     }
 
-    public Questao getSelectedRow() {
+    public Answer getSelectedRow() {
         Notification.show("asdasd");
         return asSingleSelect().getValue();
     }
 
-    public void refresh(Questao questao) {
-        getDataCommunicator().refresh(questao);
+    public void refresh(Answer answer) {
+        getDataCommunicator().refresh(answer);
     }
 
 }

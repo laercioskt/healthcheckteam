@@ -1,10 +1,7 @@
 package br.com.empresa.healthcheckteam.backend.mock;
 
 import br.com.empresa.healthcheckteam.backend.DataService;
-import br.com.empresa.healthcheckteam.backend.data.Category;
-import br.com.empresa.healthcheckteam.backend.data.Product;
-import br.com.empresa.healthcheckteam.backend.data.Questao;
-import br.com.empresa.healthcheckteam.backend.data.Time;
+import br.com.empresa.healthcheckteam.backend.data.*;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -18,16 +15,19 @@ public class MockDataService extends DataService {
 
     private static MockDataService INSTANCE;
 
+    private List<Answer> answers;
     private List<Questao> questoes;
     private List<Time> times;
     private List<Product> products;
     private List<Category> categories;
+    private int nextAnswerId = 0;
     private int nextQuestaoId = 0;
     private int nextTimeId = 0;
     private int nextProductId = 0;
     private int nextCategoryId = 0;
 
     private MockDataService() {
+        answers = MockDataGenerator.createAnswers();
         questoes = MockDataGenerator.createQuestoes();
         times = MockDataGenerator.createTimes();
         categories = MockDataGenerator.createCategories();
@@ -41,6 +41,48 @@ public class MockDataService extends DataService {
             INSTANCE = new MockDataService();
         }
         return INSTANCE;
+    }
+
+    @Override
+    public Collection<Answer> getAllAnswers() {
+        return Collections.unmodifiableList(answers);
+    }
+
+    @Override
+    public void updateAnswer(Answer a) {
+        if (a.getId() < 0) {
+            // New answer
+            a.setId(nextAnswerId++);
+            answers.add(a);
+            return;
+        }
+        for (int i = 0; i < answers.size(); i++) {
+            if (answers.get(i).getId() == a.getId()) {
+                answers.set(i, a);
+                return;
+            }
+        }
+
+        throw new IllegalArgumentException("No answer with id " + a.getId() + " found");
+    }
+
+    @Override
+    public void deleteAnswer(int answerId) {
+        Answer a = getAnswerById(answerId);
+        if (a == null) {
+            throw new IllegalArgumentException("Answer with id " + answerId + " not found");
+        }
+        answers.remove(a);
+    }
+
+    @Override
+    public Answer getAnswerById(int answerId) {
+        for (int i = 0; i < answers.size(); i++) {
+            if (answers.get(i).getId() == answerId) {
+                return answers.get(i);
+            }
+        }
+        return null;
     }
 
     @Override

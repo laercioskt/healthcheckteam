@@ -1,10 +1,7 @@
 package br.com.empresa.healthcheckteam.backend;
 
-import br.com.empresa.healthcheckteam.backend.data.Product;
-import br.com.empresa.healthcheckteam.backend.data.Questao;
-import br.com.empresa.healthcheckteam.backend.data.Time;
+import br.com.empresa.healthcheckteam.backend.data.*;
 import br.com.empresa.healthcheckteam.backend.mock.MockDataService;
-import br.com.empresa.healthcheckteam.backend.data.Category;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -13,6 +10,11 @@ import java.util.Collection;
  * Back-end service interface for retrieving and updating product data.
  */
 public abstract class DataService implements Serializable {
+
+    public abstract Collection<Answer> getAllAnswers();
+    public abstract void updateAnswer(Answer a);
+    public abstract void deleteAnswer(int answerId);
+    public abstract Answer getAnswerById(int answerId);
 
     public abstract Collection<Questao> getAllQuestoes();
     public abstract void updateQuestao(Questao q);

@@ -3,6 +3,7 @@ package br.com.empresa.healthcheckteam.ui;
 import br.com.empresa.healthcheckteam.authentication.AccessControl;
 import br.com.empresa.healthcheckteam.authentication.AccessControlFactory;
 import br.com.empresa.healthcheckteam.ui.about.AboutView;
+import br.com.empresa.healthcheckteam.ui.answers.AnswersView;
 import br.com.empresa.healthcheckteam.ui.inventory.InventoryView;
 import br.com.empresa.healthcheckteam.ui.healthcheckteam.HealthCheckTeamView;
 import br.com.empresa.healthcheckteam.ui.questoes.QuestoesView;
@@ -75,6 +76,7 @@ public class MainLayout extends AppLayout implements RouterLayout {
         // Navigation items
         addToDrawer(createMenuLink(TimesView.class, TimesView.VIEW_NAME, VaadinIcon.HAND.create()));
         addToDrawer(createMenuLink(QuestoesView.class, QuestoesView.VIEW_NAME, VaadinIcon.QUESTION.create()));
+        addToDrawer(createMenuLink(AnswersView.class, AnswersView.VIEW_NAME, VaadinIcon.REFRESH.create()));
         addToDrawer(createMenuLink(HealthCheckTeamView.class, HealthCheckTeamView.VIEW_NAME, VaadinIcon.ENVELOPE.create()));
         addToDrawer(createMenuLink(InventoryView.class, InventoryView.VIEW_NAME, VaadinIcon.EDIT.create()));
         addToDrawer(createMenuLink(AboutView.class, AboutView.VIEW_NAME, VaadinIcon.INFO_CIRCLE.create()));
