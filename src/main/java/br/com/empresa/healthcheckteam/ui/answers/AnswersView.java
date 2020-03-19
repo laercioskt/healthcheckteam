@@ -59,7 +59,7 @@ public class AnswersView extends HorizontalLayout implements HasUrlParameter<Str
 
     public HorizontalLayout createTopBar() {
         filter = new TextField();
-        filter.setPlaceholder("Filter by answer name");
+        filter.setPlaceholder("Filter by answer description");
         // Apply the filter to grid's data provider. TextField value is never
         filter.addValueChangeListener(event -> dataProvider.setFilter(event.getValue()));
         // A shortcut to focus on the textField by pressing ctrl + F
