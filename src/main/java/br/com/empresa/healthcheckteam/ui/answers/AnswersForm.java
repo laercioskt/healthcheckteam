@@ -19,7 +19,7 @@ public class AnswersForm extends Div {
 
     private final VerticalLayout content;
 
-    private final TextArea descricao;
+    private final TextArea answer;
     private Button save;
     private Button discard;
     private Button cancel;
@@ -39,11 +39,11 @@ public class AnswersForm extends Div {
 
         viewLogic = sampleCrudLogic;
 
-        descricao = new TextArea("Answer description");
-        descricao.setWidth("100%");
-        descricao.setRequired(true);
-        descricao.setValueChangeMode(ValueChangeMode.EAGER);
-        content.add(descricao);
+        answer = new TextArea("Answer description");
+        answer.setWidth("100%");
+        answer.setRequired(true);
+        answer.setValueChangeMode(ValueChangeMode.EAGER);
+        content.add(answer);
 
         binder = new BeanValidationBinder<>(Answer.class);
         binder.bindInstanceFields(this);
