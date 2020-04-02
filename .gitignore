@@ -31,3 +31,5 @@ dependency-reduced-pom.xml
 README.html
 /node_modules/
 /webpack.generated.js
+/package.json
+/package-lock.json

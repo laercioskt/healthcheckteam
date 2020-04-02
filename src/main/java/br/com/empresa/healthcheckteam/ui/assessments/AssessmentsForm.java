@@ -55,7 +55,6 @@ public class AssessmentsForm extends Div {
         content.add(sample);
 
         binder = new BeanValidationBinder<>(Assessment.class);
-        binder.bindInstanceFields(this);
 
         binder.addStatusChangeListener(event -> {
             final boolean isValid = !event.hasValidationErrors();
