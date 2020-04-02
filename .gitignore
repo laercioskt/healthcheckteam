@@ -30,3 +30,4 @@ accessingdataneo4j.db
 dependency-reduced-pom.xml
 README.html
 /node_modules/
+/webpack.generated.js
