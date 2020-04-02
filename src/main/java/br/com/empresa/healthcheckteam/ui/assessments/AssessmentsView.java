@@ -27,7 +27,7 @@ public class AssessmentsView extends HorizontalLayout implements HasUrlParameter
     public static final String VIEW_NAME = "Assessments";
 
     //    private final AssessmentsGrid grid;
-    private final AssessmentsForm form;
+    private final AssessmentForm form;
     private TextField filter;
 
     private final AssessmentsViewLogic viewLogic = new AssessmentsViewLogic(this);
@@ -50,7 +50,7 @@ public class AssessmentsView extends HorizontalLayout implements HasUrlParameter
 
         // Allows user to select a single row in the grid.
 //        grid.asSingleSelect().addValueChangeListener(event -> viewLogic.rowSelected(event.getValue()));
-        form = new AssessmentsForm(viewLogic);
+        form = new AssessmentForm(viewLogic);
         final VerticalLayout barAndGridLayout = new VerticalLayout();
         barAndGridLayout.add(topLayout);
         barAndGridLayout.add(grid);
