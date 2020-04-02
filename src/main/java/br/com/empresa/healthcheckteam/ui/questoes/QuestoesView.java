@@ -43,6 +43,7 @@ public class QuestoesView extends HorizontalLayout implements HasUrlParameter<St
         // Allows user to select a single row in the grid.
         grid.asSingleSelect().addValueChangeListener(event -> viewLogic.rowSelected(event.getValue()));
         form = new QuestoesForm(viewLogic);
+//        form.setAnswers(DataService.get().getAllQuestoes().stream().flatMap(questao -> questao.getAnswers().stream()).collect(toSet()));
         final VerticalLayout barAndGridLayout = new VerticalLayout();
         barAndGridLayout.add(topLayout);
         barAndGridLayout.add(grid);

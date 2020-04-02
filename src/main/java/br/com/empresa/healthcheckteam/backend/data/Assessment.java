@@ -1,22 +1,16 @@
 package br.com.empresa.healthcheckteam.backend.data;
 
-import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.io.Serializable;
 import java.util.Objects;
-import java.util.Set;
 
-public class Questao implements Serializable {
+public class Assessment {
 
     @NotNull
     private int id = -1;
     @NotNull
-    @Size(min = 2, message = "Descrição da questão must have at least two characters")
-    private String descricao = "";
-
-    @OneToMany
-    private Set<Answer> answers;
+    @Size(min = 2, message = "Assessment name must have at least two characters")
+    private String assessmentName = "";
 
     public int getId() {
         return id;
@@ -26,23 +20,15 @@ public class Questao implements Serializable {
         this.id = id;
     }
 
-    public String getDescricao() {
-        return descricao;
+    public String getAssessmentName() {
+        return assessmentName;
     }
 
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
+    public void setAssessmentName(String assessmentName) {
+        this.assessmentName = assessmentName;
     }
 
-    public Set<Answer> getAnswers() {
-        return answers;
-    }
-
-    public void setAnswers(Set<Answer> answers) {
-        this.answers = answers;
-    }
-
-    public boolean isNewQuestao() {
+    public boolean isNewAssessment() {
         return getId() == -1;
     }
 
@@ -55,8 +41,8 @@ public class Questao implements Serializable {
         if (obj == null || id == -1) {
             return false;
         }
-        if (obj instanceof Questao) {
-            return id == ((Questao) obj).id;
+        if (obj instanceof Assessment) {
+            return id == ((Assessment) obj).id;
         }
         return false;
     }

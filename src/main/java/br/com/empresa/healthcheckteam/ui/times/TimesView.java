@@ -20,7 +20,7 @@ import com.vaadin.flow.router.*;
  * operations and controlling the view based on events from outside.
  */
 @Route(value = "Times", layout = MainLayout.class)
-@RouteAlias(value = "", layout = MainLayout.class)
+@RouteAlias(value = "Times", layout = MainLayout.class)
 public class TimesView extends HorizontalLayout implements HasUrlParameter<String> {
 
     public static final String VIEW_NAME = "Teams";

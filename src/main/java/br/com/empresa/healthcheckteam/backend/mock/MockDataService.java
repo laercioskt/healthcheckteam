@@ -15,11 +15,13 @@ public class MockDataService extends DataService {
 
     private static MockDataService INSTANCE;
 
+    private List<Assessment> assessments;
     private List<Answer> answers;
     private List<Questao> questoes;
     private List<Time> times;
     private List<Product> products;
     private List<Category> categories;
+    private int nextAssessmentId = 0;
     private int nextAnswerId = 0;
     private int nextQuestaoId = 0;
     private int nextTimeId = 0;
@@ -27,6 +29,7 @@ public class MockDataService extends DataService {
     private int nextCategoryId = 0;
 
     private MockDataService() {
+        assessments = MockDataGenerator.createAssessments();
         answers = MockDataGenerator.createAnswers();
         questoes = MockDataGenerator.createQuestoes();
         times = MockDataGenerator.createTimes();
@@ -80,6 +83,48 @@ public class MockDataService extends DataService {
         for (int i = 0; i < answers.size(); i++) {
             if (answers.get(i).getId() == answerId) {
                 return answers.get(i);
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public Collection<Assessment> getAllAssessments() {
+        return Collections.unmodifiableList(assessments);
+    }
+
+    @Override
+    public void updateAssessment(Assessment a) {
+        if (a.getId() < 0) {
+            // New assessment
+            a.setId(nextAssessmentId++);
+            assessments.add(a);
+            return;
+        }
+        for (int i = 0; i < assessments.size(); i++) {
+            if (assessments.get(i).getId() == a.getId()) {
+                assessments.set(i, a);
+                return;
+            }
+        }
+
+        throw new IllegalArgumentException("No assessment with id " + a.getId() + " found");
+    }
+
+    @Override
+    public void deleteAssessment(int assessmentId) {
+        Assessment a = getAssessmentById(assessmentId);
+        if (a == null) {
+            throw new IllegalArgumentException("Assessment with id " + assessmentId + " not found");
+        }
+        assessments.remove(a);
+    }
+
+    @Override
+    public Assessment getAssessmentById(int assessmentId) {
+        for (int i = 0; i < assessments.size(); i++) {
+            if (assessments.get(i).getId() == assessmentId) {
+                return assessments.get(i);
             }
         }
         return null;

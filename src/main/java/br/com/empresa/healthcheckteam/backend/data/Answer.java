@@ -11,6 +11,7 @@ public class Answer {
     @NotNull
     @Size(min = 2, message = "Answer must have at least two characters")
     private String answer = "";
+    private int order = 0;
 
     public int getId() {
         return id;
@@ -28,8 +29,21 @@ public class Answer {
         this.answer = answer;
     }
 
+    public int getOrder() {
+        return order;
+    }
+
+    public void setOrder(int order) {
+        this.order = order;
+    }
+
     public boolean isNewAnswer() {
         return getId() == -1;
+    }
+
+    @Override
+    public String toString() {
+        return answer;
     }
 
     /*

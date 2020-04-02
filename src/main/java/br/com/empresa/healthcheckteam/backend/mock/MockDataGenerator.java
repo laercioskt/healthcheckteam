@@ -4,11 +4,16 @@ import br.com.empresa.healthcheckteam.backend.data.*;
 
 import java.math.BigDecimal;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import static java.util.Arrays.stream;
 import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toSet;
 
 public class MockDataGenerator {
+    private static int nextAssessmentId = 1;
     private static int nextAnswerId = 1;
     private static int nextQuestaoId = 1;
     private static int nextTimeId = 1;
@@ -18,23 +23,78 @@ public class MockDataGenerator {
 
     private static final String[] timesNames = new String[]{"XTeam", "UX", "DevOps", "Ame Digital", "Claro"};
 
-    private static final String[] questoesDescricoes = new String[]{
-            "Motivação e Propósito: O time está motivado? As pessoas estão engajadas? As pessoas entendem o propósito do seu trabalho? Sinto que...",
-            "Empoderamento e Autonomia do time: o time tem autonomia para decidir no que é mais importante para trabalhar no momento? O time consegue atuar em bloqueios e riscos? O time depende de outros times para fazer seu trabalho? O time se responsabiliza pelos acertos e erros? Sinto que...",
-            "Satisfação do Cliente: Você acha que o seu trabalho atende as necessidades do cliente? O cliente está feliz com as entregas? Sinto que...",
-            "Colaboração do Time: Trabalho frequente junto com alguém da equipe (exemplo: pair programming), com revezamento de colegas e tarefas? O time está engajado em trocar informação e ajudar um ao outro? Pode-se contar com os membros do time para auxílio? Sinto que...",
-            "Excelência técnica: As pessoas com quem trabalho mandam bem? Sinto que...",
-            "Desenvolvimento Ágil: Fazemos as cerimônias que precisamos para termos entregas com qualidade? Usamos as cerimônias para fazer a melhoria contínua?Daily, Retrospectiva, Ronda, Pair Programming, Code Review, Alfa cruzado/Demonstração da Feature, Refactoring, Testes Automatizados. Sinto que...",
-            "Processo Objective: O time conhece e segue o processo Objective?Obs: Quebra das tarefas em 3 níveis, orçamento por complexidade, retroalimentação do T-Shirt, indicadores, WIP Limitado, Fluxo contínuo. Sinto que...",
-            "Entrega Contínua: Commitamos continuamente nosso código? Temos sempre um build “pronto” para produção? Meus commits entram automaticamente em produção? Sinto que...",
-            "Qualitividade: Temos “slack” focado em melhoria de código? Atuamos ativamente para diminuir a complexidade do produto? Nossas ações melhoram a produtividade? Obs: automatizar mecanismos periféricos não é qualitividade. Sinto que..."
-    };
+    private static final Map<String, String[]> questoesDescricoes = new HashMap<String, String[]>() {{
+        put("Motivação e Propósito: O time está motivado? As pessoas estão engajadas? As pessoas entendem o propósito do seu trabalho? Sinto que...",
+                new String[]{"O time está desmotivado",
+                        "O time quase nunca está motivado",
+                        "Há pouca motivação no time",
+                        "O time está motivado para algumas tarefas",
+                        "Em geral, o time está motivado. Sabemos nosso propósito",
+                        "O time está altamente motivado e engajado no propósito"});
+        put("Empoderamento e Autonomia do time: o time tem autonomia para decidir no que é mais importante para trabalhar no momento? O time consegue atuar em bloqueios e riscos? O time depende de outros times para fazer seu trabalho? O time se responsabiliza pelos acertos e erros? Sinto que...",
+                new String[]{"Nunca temos autonomia",
+                        "Quase nunca temos autonomia",
+                        "Às vezes, temos autonomia",
+                        "Temos autonomia, mas dependemos de outras pessoas para decidir",
+                        "Podemos decidir a maioria das coisas (temos pouca dependência)",
+                        "Podemos decidir qualquer coisa (inclusive qualitividade)"});
+        put("Satisfação do Cliente: Você acha que o seu trabalho atende as necessidades do cliente? O cliente está feliz com as entregas? Sinto que...",
+                new String[]{"Não entregamos valor para o cliente",
+                        "Há pouca entrega de valor para o cliente",
+                        "O cliente gosta de algumas entregas",
+                        "Entregamos valor para o cliente",
+                        "O cliente está satisfeito",
+                        "Nossas entregas Encantam o cliente"});
+        put("Colaboração do Time: Trabalho frequente junto com alguém da equipe (exemplo: pair programming), com revezamento de colegas e tarefas? O time está engajado em trocar informação e ajudar um ao outro? Pode-se contar com os membros do time para auxílio? Sinto que...",
+                new String[]{"O time não se conversa",
+                        "Quase nunca há colaboração",
+                        "Há alguma colaboração no time",
+                        "Há troca de informação, mas não podemos contar com isso",
+                        "O time colabora bastante entre si",
+                        "Podemos contar com qualquer membro do time"});
+        put("Excelência técnica: As pessoas com quem trabalho mandam bem? Sinto que...",
+                new String[]{"O time não tem a skill técnica necessária",
+                        "Skill técnica do time é muito baixa",
+                        "O time ainda não tem a skill técnica necessária",
+                        "A skill técnica do time é suficiente para desenvolver o trabalho",
+                        "O time manda bem!",
+                        "O time é o conselho jedi no desenvolvimento de software!"});
+        put("Desenvolvimento Ágil: Fazemos as cerimônias que precisamos para termos entregas com qualidade? Usamos as cerimônias para fazer a melhoria contínua?Daily, Retrospectiva, Ronda, Pair Programming, Code Review, Alfa cruzado/Demonstração da Feature, Refactoring, Testes Automatizados. Sinto que...",
+                new String[]{"O time não faz as cerimônias",
+                        "O time faz apenas a Daily e nem é diária",
+                        "O time faz o mínimo possível das cerimônias",
+                        "O time faz cerimônias suficiente para ter visibilidade e qualidade",
+                        "O time faz as cerimônias e usa o resultado para melhorar continuamente",
+                        "O time está sempre se reinventando"});
+        put("Processo Objective: O time conhece e segue o processo Objective?Obs: Quebra das tarefas em 3 níveis, orçamento por complexidade, retroalimentação do T-Shirt, indicadores, WIP Limitado, Fluxo contínuo. Sinto que...",
+                new String[]{"Não temos processo",
+                        "Temos um processo a ser seguido, mas não é muito claro",
+                        "Seguimos algumas coisas do processo",
+                        "Seguimos boa parte do processo. WIP limitado no 3 nível",
+                        "Seguimos grande parte do processo. WIP Limitado no 2 nível",
+                        "Estamos em Estado de Fluxo!!"});
+        put("Entrega Contínua: Commitamos continuamente nosso código? Temos sempre um build “pronto” para produção? Meus commits entram automaticamente em produção? Sinto que...",
+                new String[]{"Geração do build e entrega são manuais. Commit direto na trunk",
+                        "Trabalhamos em branch antigas. Trunk com testes falhando",
+                        "Fazemos downmerge diário. Build ainda é manual",
+                        "Integração contínua. Entrega é feita manualmente ao cliente",
+                        "Integração e Entrega para homologação/produção estão automatizados",
+                        "Cada commit que faço na trunk vai direto para homologação / produção"});
+        put("Qualitividade: Temos “slack” focado em melhoria de código? Atuamos ativamente para diminuir a complexidade do produto? Nossas ações melhoram a produtividade? Obs: automatizar mecanismos periféricos não é qualitividade. Sinto que...",
+                new String[]{"Não fazemos nada para melhorar produtividade",
+                        "Temos iniciativas isoladas de melhoria de qualidade",
+                        "10% do nosso tempo é dedicado a melhorar código",
+                        "15% no nosso tempo é dedicado a melhorar o código",
+                        "20% no nosso tempo é dedicado a melhorar o código",
+                        "Qualitividade é um processo contínuo executado a cada Feature"});
+    }};
 
     private static final String[] answersDescriptions = new String[]{
             "O time está desmotivado",
             "O time quase nunca está motivado",
             "Há pouca motivação no time",
             "O time está motivado para algumas tarefas",
+            "Em geral, o time está motivado. Sabemos nosso propósito",
             "O time está altamente motivado e engajado no propósito",
 
             "Nunca temos autonomia",
@@ -116,16 +176,28 @@ public class MockDataGenerator {
             "speaking to a big audience", "creating software", "giant needles",
             "elephants", "keeping your wife happy"};
 
+    static List<Assessment> createAssessments() {
+        Stream<String> assessments = IntStream.range(1, 20).mapToObj(value -> "Assessment " + value);
+        return assessments.map(MockDataGenerator::createAssessment).collect(toList());
+    }
+
     static List<Time> createTimes() {
         return stream(timesNames).map(MockDataGenerator::createTime).collect(toList());
     }
 
     static List<Questao> createQuestoes() {
-        return stream(questoesDescricoes).map(MockDataGenerator::createQuestao).collect(toList());
+        return questoesDescricoes.entrySet().stream()
+                .map(entry -> {
+                    AtomicInteger order = new AtomicInteger(0);
+                    Stream<Answer> answerStream = stream(entry.getValue())
+                            .map(answerDescription -> createAnswer(answerDescription, order.getAndAdd(1)));
+                    return createQuestao(entry.getKey(), answerStream.collect(toSet()));
+                })
+                .collect(toList());
     }
 
     static List<Answer> createAnswers() {
-        return stream(answersDescriptions).map(MockDataGenerator::createAnswer).collect(toList());
+        return stream(answersDescriptions).map(answerDescription -> createAnswer(answerDescription, 0)).collect(toList());
     }
 
     static List<Category> createCategories() {
@@ -148,17 +220,26 @@ public class MockDataGenerator {
         return products;
     }
 
-    private static Questao createQuestao(String descricao) {
-        Questao p = new Questao();
-        p.setId(nextQuestaoId++);
-        p.setDescricao(descricao);
-        return p;
+    private static Questao createQuestao(String descricao, Set<Answer> answers) {
+        Questao q = new Questao();
+        q.setId(nextQuestaoId++);
+        q.setDescricao(descricao);
+        q.setAnswers(answers);
+        return q;
     }
 
-    private static Answer createAnswer(String answerDescription) {
+    private static Answer createAnswer(String answerDescription, int order) {
         Answer a = new Answer();
         a.setId(nextAnswerId++);
         a.setAnswer(answerDescription);
+        a.setOrder(order);
+        return a;
+    }
+
+    private static Assessment createAssessment(String name) {
+        Assessment a = new Assessment();
+        a.setId(nextAssessmentId++);
+        a.setAssessmentName(name);
         return a;
     }
 
