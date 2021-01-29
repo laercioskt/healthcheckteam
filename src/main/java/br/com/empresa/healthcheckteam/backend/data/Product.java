@@ -5,6 +5,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -17,7 +18,7 @@ public class Product implements Serializable {
     private String productName = "";
     @Min(0)
     private BigDecimal price = BigDecimal.ZERO;
-    private Set<Category> category;
+    private Set<Category> category = new HashSet<>();
     @Min(value = 0, message = "Can't have negative amount in stock")
     private int stockCount = 0;
     @NotNull

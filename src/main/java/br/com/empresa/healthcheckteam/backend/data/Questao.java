@@ -4,6 +4,7 @@ import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -16,7 +17,7 @@ public class Questao implements Serializable {
     private String descricao = "";
 
     @OneToMany
-    private Set<Answer> answers;
+    private Set<Answer> answers = new HashSet<>();
 
     public int getId() {
         return id;
