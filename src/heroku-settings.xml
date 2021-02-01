@@ -6,7 +6,6 @@
     <!-- activate by setting the MAVEN_SETTINGS_PATH config var to heroku-settings.xml in Heroku project settings tab.
     See https://devcenter.heroku.com/articles/using-a-custom-maven-settings-xml for more details.
      -->
-
     <activeProfiles>
         <activeProfile>production</activeProfile>
         <activeProfile>npm</activeProfile>
