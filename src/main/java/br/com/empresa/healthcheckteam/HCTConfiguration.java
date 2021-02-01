@@ -17,6 +17,7 @@ public class HCTConfiguration {
     @Bean
     public DataSource dataSource() throws URISyntaxException {
         HikariConfig config = new HikariConfig();
+        config.setDriverClassName("org.postgresql.Driver");
         URI dbUri = new URI(System.getenv("DATABASE_URL"));
         config.setJdbcUrl("jdbc:postgresql://" + dbUri.getHost() + ':' + dbUri.getPort() + dbUri.getPath());
         config.setUsername(dbUri.getUserInfo().split(":")[0]);
