@@ -8,6 +8,7 @@ import org.flywaydb.core.api.migration.BaseJavaMigration;
 import org.flywaydb.core.api.migration.Context;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
@@ -15,6 +16,7 @@ import java.util.Arrays;
 import static java.lang.String.format;
 import static org.slf4j.LoggerFactory.getLogger;
 
+@ConditionalOnProperty(value="springconfig", havingValue="production")
 @Component
 public class V3__CreateDefaultQuestionsAndAnswerOptions extends BaseJavaMigration {
 
