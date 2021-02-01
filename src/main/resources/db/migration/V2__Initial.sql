@@ -1,1 +1,0 @@
-insert into team values (nextval('hibernate_sequence'), 1, 'ebanx');

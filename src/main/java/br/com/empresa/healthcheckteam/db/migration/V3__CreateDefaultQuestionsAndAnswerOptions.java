@@ -16,9 +16,9 @@ import static java.lang.String.format;
 import static org.slf4j.LoggerFactory.getLogger;
 
 @Component
-public class V2__CreateDefaultQuestionsAndAnswerOptions extends BaseJavaMigration {
+public class V3__CreateDefaultQuestionsAndAnswerOptions extends BaseJavaMigration {
 
-    private static final Logger LOGGER = getLogger(V2__CreateDefaultQuestionsAndAnswerOptions.class);
+    private static final Logger LOGGER = getLogger(V3__CreateDefaultQuestionsAndAnswerOptions.class);
 
     @Autowired
     QuestionRepository questionRepository;
