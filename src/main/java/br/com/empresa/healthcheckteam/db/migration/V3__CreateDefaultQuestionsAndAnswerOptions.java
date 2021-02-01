@@ -1,8 +1,8 @@
 package br.com.empresa.healthcheckteam.db.migration;
 
-import br.com.empresa.healthcheckteam.backend.data2.Question;
-import br.com.empresa.healthcheckteam.backend.data2.Question.QuestionBuilder;
-import br.com.empresa.healthcheckteam.backend.mock.MockDataGenerator;
+import br.com.empresa.healthcheckteam.backend.data.Question;
+import br.com.empresa.healthcheckteam.backend.data.Question.QuestionBuilder;
+import br.com.empresa.healthcheckteam.backend.defaultdata.DefaultDataGenerator;
 import br.com.empresa.healthcheckteam.backend.repository.QuestionRepository;
 import org.flywaydb.core.api.migration.BaseJavaMigration;
 import org.flywaydb.core.api.migration.Context;
@@ -28,7 +28,7 @@ public class V3__CreateDefaultQuestionsAndAnswerOptions extends BaseJavaMigratio
     @Override
     public void migrate(Context context) {
         LOGGER.info("Starting migration");
-        MockDataGenerator.questoesDescricoes.forEach((question, options) -> {
+        DefaultDataGenerator.defaultQuestions.forEach((question, options) -> {
             QuestionBuilder builder = new QuestionBuilder().withDescription(question);
             Arrays.stream(options).forEach(builder::withAnswerOption);
             Question savedQuestion = questionRepository.save(builder.build());

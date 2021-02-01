@@ -1,4 +1,4 @@
-package br.com.empresa.healthcheckteam.backend.data2;
+package br.com.empresa.healthcheckteam.backend.data;
 
 public interface Identifiable {
 

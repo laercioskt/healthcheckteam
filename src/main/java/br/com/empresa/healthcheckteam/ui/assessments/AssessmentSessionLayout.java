@@ -1,8 +1,8 @@
 package br.com.empresa.healthcheckteam.ui.assessments;
 
 import br.com.empresa.healthcheckteam.backend.data.Assessment;
-import br.com.empresa.healthcheckteam.backend.data2.AssessmentAnswerOption;
-import br.com.empresa.healthcheckteam.backend.data2.AssessmentQuestion;
+import br.com.empresa.healthcheckteam.backend.data.AssessmentAnswerOption;
+import br.com.empresa.healthcheckteam.backend.data.AssessmentQuestion;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.KeyModifier;
 import com.vaadin.flow.component.button.Button;

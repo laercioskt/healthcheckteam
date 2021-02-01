@@ -1,9 +1,9 @@
 package br.com.empresa.healthcheckteam.backend.repository;
 
-import br.com.empresa.healthcheckteam.backend.data2.Member;
-import br.com.empresa.healthcheckteam.backend.data2.Member.MemberBuilder;
-import br.com.empresa.healthcheckteam.backend.data2.Team;
-import br.com.empresa.healthcheckteam.backend.data2.Team.TeamBuilder;
+import br.com.empresa.healthcheckteam.backend.data.Member;
+import br.com.empresa.healthcheckteam.backend.data.Member.MemberBuilder;
+import br.com.empresa.healthcheckteam.backend.data.Team;
+import br.com.empresa.healthcheckteam.backend.data.Team.TeamBuilder;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

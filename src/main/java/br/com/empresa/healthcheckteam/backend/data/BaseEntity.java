@@ -1,7 +1,5 @@
 package br.com.empresa.healthcheckteam.backend.data;
 
-import br.com.empresa.healthcheckteam.backend.data2.Identifiable;
-
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;

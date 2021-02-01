@@ -1,6 +1,6 @@
 package br.com.empresa.healthcheckteam.ui.assessment;
 
-import br.com.empresa.healthcheckteam.backend.data2.Assessment;
+import br.com.empresa.healthcheckteam.backend.data.Assessment;
 import br.com.empresa.healthcheckteam.backend.repository.AssessmentRepository;
 import br.com.empresa.healthcheckteam.backend.repository.QuestionRepository;
 import br.com.empresa.healthcheckteam.backend.repository.TeamRepository;

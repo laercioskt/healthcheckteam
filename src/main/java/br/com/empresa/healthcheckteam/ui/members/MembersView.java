@@ -1,6 +1,6 @@
 package br.com.empresa.healthcheckteam.ui.members;
 
-import br.com.empresa.healthcheckteam.backend.data2.Member;
+import br.com.empresa.healthcheckteam.backend.data.Member;
 import br.com.empresa.healthcheckteam.backend.repository.MemberRepository;
 import br.com.empresa.healthcheckteam.ui.MainLayout;
 import com.vaadin.flow.component.Key;

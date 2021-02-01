@@ -1,6 +1,6 @@
 package br.com.empresa.healthcheckteam.ui.members;
 
-import br.com.empresa.healthcheckteam.backend.data2.Member;
+import br.com.empresa.healthcheckteam.backend.data.Member;
 import com.vaadin.flow.component.AttachEvent;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.grid.Grid;

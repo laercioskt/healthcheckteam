@@ -1,7 +1,7 @@
 package br.com.empresa.healthcheckteam.ui.question;
 
-import br.com.empresa.healthcheckteam.backend.data2.AnswerOption;
-import br.com.empresa.healthcheckteam.backend.data2.Question;
+import br.com.empresa.healthcheckteam.backend.data.AnswerOption;
+import br.com.empresa.healthcheckteam.backend.data.Question;
 import br.com.empresa.healthcheckteam.ui.ConfirmDialog;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.Key;

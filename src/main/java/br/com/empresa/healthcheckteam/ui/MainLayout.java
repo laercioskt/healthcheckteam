@@ -8,7 +8,6 @@ import br.com.empresa.healthcheckteam.ui.assessments.AssessmentSessionView;
 import br.com.empresa.healthcheckteam.ui.members.MembersView;
 import br.com.empresa.healthcheckteam.ui.question.QuestionView;
 import br.com.empresa.healthcheckteam.ui.teams.TeamsView;
-import br.com.empresa.healthcheckteam.ui.times.TimesView;
 import com.vaadin.flow.component.AttachEvent;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.Key;
@@ -76,13 +75,10 @@ public class MainLayout extends AppLayout implements RouterLayout {
 
         // Navigation items
         addToDrawer(createMenuLink(AssessmentSessionView.class, AssessmentSessionView.VIEW_NAME, VaadinIcon.ADJUST.create()));
-        addToDrawer(createMenuLink(TeamsView.class, TimesView.VIEW_NAME, VaadinIcon.HAND.create()));
+        addToDrawer(createMenuLink(TeamsView.class, TeamsView.VIEW_NAME, VaadinIcon.HAND.create()));
         addToDrawer(createMenuLink(MembersView.class, MembersView.VIEW_NAME, VaadinIcon.USER.create()));
         addToDrawer(createMenuLink(QuestionView.class, QuestionView.VIEW_NAME, VaadinIcon.QUESTION.create()));
         addToDrawer(createMenuLink(AssessmentView.class, AssessmentView.VIEW_NAME, VaadinIcon.ADJUST.create()));
-//        addToDrawer(createMenuLink(AnswersView.class, AnswersView.VIEW_NAME, VaadinIcon.REFRESH.create()));
-//        addToDrawer(createMenuLink(HealthCheckTeamView.class, HealthCheckTeamView.VIEW_NAME, VaadinIcon.ENVELOPE.create()));
-//        addToDrawer(createMenuLink(InventoryView.class, InventoryView.VIEW_NAME, VaadinIcon.EDIT.create()));
         addToDrawer(createMenuLink(AboutView.class, AboutView.VIEW_NAME, VaadinIcon.INFO_CIRCLE.create()));
 
         // Create logout button but don't add it yet; admin view might be added
@@ -121,8 +117,8 @@ public class MainLayout extends AppLayout implements RouterLayout {
     private void registerAdminViewIfApplicable(AccessControl accessControl) {
         // register the admin view dynamically only for any admin user logged in
         if (accessControl.isUserInRole(AccessControl.ADMIN_ROLE_NAME)
-                && !RouteConfiguration.forSessionScope().isRouteRegistered(AdminView.class)) {
-            RouteConfiguration.forSessionScope().setRoute(AdminView.VIEW_NAME, AdminView.class, MainLayout.class);
+                && !RouteConfiguration.forSessionScope().isRouteRegistered(TeamsView.class)) {
+            RouteConfiguration.forSessionScope().setRoute(TeamsView.VIEW_NAME, TeamsView.class, MainLayout.class);
             // as logout will purge the session route registry, no need to
             // unregister the view on logout
         }
@@ -144,7 +140,7 @@ public class MainLayout extends AppLayout implements RouterLayout {
 
             // The link can only be created now, because the RouterLink checks
             // that the target is valid.
-            addToDrawer(createMenuLink(AdminView.class, AdminView.VIEW_NAME, VaadinIcon.DOCTOR.create()));
+            addToDrawer(createMenuLink(TeamsView.class, TeamsView.VIEW_NAME, VaadinIcon.DOCTOR.create()));
         }
 
         // Finally, add logout button for all users

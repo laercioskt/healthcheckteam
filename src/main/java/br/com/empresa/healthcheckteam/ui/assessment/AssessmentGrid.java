@@ -1,6 +1,6 @@
 package br.com.empresa.healthcheckteam.ui.assessment;
 
-import br.com.empresa.healthcheckteam.backend.data2.Assessment;
+import br.com.empresa.healthcheckteam.backend.data.Assessment;
 import com.vaadin.flow.component.AttachEvent;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.grid.Grid;

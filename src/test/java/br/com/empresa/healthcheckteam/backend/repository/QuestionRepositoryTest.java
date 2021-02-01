@@ -1,8 +1,8 @@
 package br.com.empresa.healthcheckteam.backend.repository;
 
-import br.com.empresa.healthcheckteam.backend.data2.AnswerOption;
-import br.com.empresa.healthcheckteam.backend.data2.Question;
-import br.com.empresa.healthcheckteam.backend.data2.Question.QuestionBuilder;
+import br.com.empresa.healthcheckteam.backend.data.AnswerOption;
+import br.com.empresa.healthcheckteam.backend.data.Question;
+import br.com.empresa.healthcheckteam.backend.data.Question.QuestionBuilder;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

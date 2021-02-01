@@ -1,59 +1,99 @@
 package br.com.empresa.healthcheckteam.backend.data;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-import java.util.Objects;
+import br.com.empresa.healthcheckteam.backend.data.AssessmentQuestion.AssessmentQuestionBuilder;
+import org.hibernate.envers.Audited;
 
-public class Assessment {
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import java.io.Serializable;
+import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
-    @NotNull
-    private int id = -1;
-    @NotNull
-    @Size(min = 2, message = "Assessment name must have at least two characters")
-    private String assessmentName = "";
+import static java.lang.String.format;
+import static java.time.format.DateTimeFormatter.ofPattern;
+import static java.util.stream.Collectors.toSet;
 
-    public int getId() {
-        return id;
+@Entity
+@Audited
+public class Assessment extends BaseEntity implements Serializable {
+
+    private LocalDate created;
+
+    @ManyToOne
+    @JoinColumn(name = "team_id", nullable = false)
+    private Team team;
+
+    @OneToMany(mappedBy = "assessment", cascade = CascadeType.ALL)
+    private Set<AssessmentQuestion> questions = new HashSet<>();
+
+    public LocalDate getCreated() {
+        return created;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setCreated(LocalDate created) {
+        this.created = created;
     }
 
-    public String getAssessmentName() {
-        return assessmentName;
+    public Team getTeam() {
+        return team;
     }
 
-    public void setAssessmentName(String assessmentName) {
-        this.assessmentName = assessmentName;
+    public void setTeam(Team team) {
+        this.team = team;
     }
 
-    public boolean isNewAssessment() {
-        return getId() == -1;
+    public Set<AssessmentQuestion> getQuestions() {
+        return questions;
     }
 
-    /*
-     * Vaadin DataProviders rely on properly implemented equals and hashcode
-     * methods.
-     */
-    @Override
-    public boolean equals(Object obj) {
-        if (obj == null || id == -1) {
-            return false;
+    public void setQuestions(Set<AssessmentQuestion> questions) {
+        this.questions = questions;
+    }
+
+    public String getDescription() {
+        return format("Team: %s - Date: %s", getTeam().getName(), getCreated().format(ofPattern("dd/MM/yyyy")));
+    }
+
+    public static class AssessmentBuilder {
+
+        private LocalDate created;
+        private Team team;
+        private final Set<Question> questions = new HashSet<>();
+
+        public AssessmentBuilder withCreated(LocalDate created) {
+            this.created = created;
+            return this;
         }
-        if (obj instanceof Assessment) {
-            return id == ((Assessment) obj).id;
-        }
-        return false;
-    }
 
-    @Override
-    public int hashCode() {
-        if (id == -1) {
-            return super.hashCode();
+        public AssessmentBuilder withTeam(Team team) {
+            this.team = team;
+            return this;
         }
 
-        return Objects.hash(id);
-    }
+        public AssessmentBuilder withQuestion(Question question) {
+            this.questions.add(question);
+            return this;
+        }
 
+        public Assessment build() {
+            Assessment assessment = new Assessment();
+            assessment.setCreated(created);
+            assessment.setTeam(team);
+            assessment.setQuestions(questions.stream().map(q -> createAssessmentQuestion(assessment, q)).collect(toSet()));
+            return assessment;
+        }
+
+        private AssessmentQuestion createAssessmentQuestion(Assessment assessment, Question question) {
+            AssessmentQuestionBuilder builder = new AssessmentQuestionBuilder()
+                    .withQuestion(question)
+                    .withAssessment(assessment);
+            question.getOptions().forEach(builder::withAnswerOption);
+            return builder.build();
+        }
+
+    }
 }

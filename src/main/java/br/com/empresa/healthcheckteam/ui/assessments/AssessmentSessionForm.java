@@ -1,7 +1,7 @@
 package br.com.empresa.healthcheckteam.ui.assessments;
 
-import br.com.empresa.healthcheckteam.backend.data2.Assessment;
-import br.com.empresa.healthcheckteam.backend.data2.AssessmentQuestion;
+import br.com.empresa.healthcheckteam.backend.data.Assessment;
+import br.com.empresa.healthcheckteam.backend.data.AssessmentQuestion;
 import br.com.empresa.healthcheckteam.backend.repository.AssessmentRepository;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dependency.CssImport;

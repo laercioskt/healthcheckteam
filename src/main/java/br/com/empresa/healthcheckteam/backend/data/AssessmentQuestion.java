@@ -1,7 +1,6 @@
-package br.com.empresa.healthcheckteam.backend.data2;
+package br.com.empresa.healthcheckteam.backend.data;
 
-import br.com.empresa.healthcheckteam.backend.data.BaseEntity;
-import br.com.empresa.healthcheckteam.backend.data2.AssessmentAnswerOption.AssessmentAnswerOptionBuilder;
+import br.com.empresa.healthcheckteam.backend.data.AssessmentAnswerOption.AssessmentAnswerOptionBuilder;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.CascadeType;

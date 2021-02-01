@@ -1,6 +1,6 @@
 package br.com.empresa.healthcheckteam.ui.teams;
 
-import br.com.empresa.healthcheckteam.backend.data2.Team;
+import br.com.empresa.healthcheckteam.backend.data.Team;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.KeyModifier;
 import com.vaadin.flow.component.button.Button;

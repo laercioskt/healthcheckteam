@@ -1,6 +1,6 @@
 package br.com.empresa.healthcheckteam.ui.question;
 
-import br.com.empresa.healthcheckteam.backend.data2.Question;
+import br.com.empresa.healthcheckteam.backend.data.Question;
 import br.com.empresa.healthcheckteam.backend.repository.QuestionRepository;
 import com.vaadin.flow.data.provider.ListDataProvider;
 

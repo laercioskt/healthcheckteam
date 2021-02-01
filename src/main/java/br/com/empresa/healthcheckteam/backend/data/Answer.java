@@ -1,73 +1,60 @@
 package br.com.empresa.healthcheckteam.backend.data;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-import java.util.Objects;
+import org.hibernate.envers.Audited;
 
-public class Answer {
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import java.io.Serializable;
 
-    @NotNull
-    private int id = -1;
-    @NotNull
-    @Size(min = 2, message = "Answer must have at least two characters")
-    private String answer = "";
-    private int order = 0;
+@Entity
+@Audited
+public class Answer extends BaseEntity implements Serializable {
 
-    public int getId() {
-        return id;
+    @ManyToOne
+    @JoinColumn(name = "member_id", nullable = false)
+    private Member member;
+
+    @ManyToOne
+    @JoinColumn(name = "assessment_answer_option_id", nullable = false)
+    private AssessmentAnswerOption assessmentAnswerOption;
+
+    public Member getMember() {
+        return member;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setMember(Member member) {
+        this.member = member;
     }
 
-    public String getAnswer() {
-        return answer;
+    public AssessmentAnswerOption getAssessmentAnswerOption() {
+        return assessmentAnswerOption;
     }
 
-    public void setAnswer(String answer) {
-        this.answer = answer;
+    public void setAssessmentAnswerOption(AssessmentAnswerOption assessmentAnswerOption) {
+        this.assessmentAnswerOption = assessmentAnswerOption;
     }
 
-    public int getOrder() {
-        return order;
-    }
+    public static class AnswerBuilder {
 
-    public void setOrder(int order) {
-        this.order = order;
-    }
+        private Member member;
+        private AssessmentAnswerOption assessmentAnswerOption;
 
-    public boolean isNewAnswer() {
-        return getId() == -1;
-    }
-
-    @Override
-    public String toString() {
-        return answer;
-    }
-
-    /*
-     * Vaadin DataProviders rely on properly implemented equals and hashcode
-     * methods.
-     */
-    @Override
-    public boolean equals(Object obj) {
-        if (obj == null || id == -1) {
-            return false;
-        }
-        if (obj instanceof Answer) {
-            return id == ((Answer) obj).id;
-        }
-        return false;
-    }
-
-    @Override
-    public int hashCode() {
-        if (id == -1) {
-            return super.hashCode();
+        public AnswerBuilder withMember(Member member) {
+            this.member = member;
+            return this;
         }
 
-        return Objects.hash(id);
+        public void withAssessmentAnswerOption(AssessmentAnswerOption assessmentAnswerOption) {
+            this.assessmentAnswerOption = assessmentAnswerOption;
+        }
+
+        public Answer build() {
+            Answer answer = new Answer();
+            answer.setMember(member);
+            answer.setAssessmentAnswerOption(assessmentAnswerOption);
+            return answer;
+        }
     }
 
 }

@@ -2,7 +2,7 @@ package br.com.empresa.healthcheckteam.ui.members;
 
 import br.com.empresa.healthcheckteam.authentication.AccessControl;
 import br.com.empresa.healthcheckteam.authentication.AccessControlFactory;
-import br.com.empresa.healthcheckteam.backend.data2.Member;
+import br.com.empresa.healthcheckteam.backend.data.Member;
 import br.com.empresa.healthcheckteam.backend.repository.MemberRepository;
 import com.vaadin.flow.component.UI;
 

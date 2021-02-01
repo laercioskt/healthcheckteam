@@ -1,13 +1,11 @@
 package br.com.empresa.healthcheckteam.ui.assessments;
 
-import br.com.empresa.healthcheckteam.backend.data2.Assessment;
+import br.com.empresa.healthcheckteam.backend.data.Assessment;
 import br.com.empresa.healthcheckteam.backend.repository.AssessmentRepository;
 import br.com.empresa.healthcheckteam.ui.MainLayout;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.KeyModifier;
 import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.button.ButtonVariant;
-import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
