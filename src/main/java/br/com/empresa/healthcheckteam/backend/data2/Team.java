@@ -62,11 +62,11 @@ public class Team extends BaseEntity implements Serializable {
         }
 
         public Team build() {
-            Team user = new Team();
+            Team team = new Team();
             if (id != null)
-                user.setId(id);
-            user.setName(this.name);
-            return user;
+                team.setId(id);
+            team.setName(this.name);
+            return team;
         }
 
     }

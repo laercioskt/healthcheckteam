@@ -61,11 +61,11 @@ public class Question extends BaseEntity implements Serializable {
         }
 
         public Question build() {
-            Question user = new Question();
+            Question question = new Question();
             if (id != null)
-                user.setId(id);
-            user.setDescription(this.description);
-            return user;
+                question.setId(id);
+            question.setDescription(this.description);
+            return question;
         }
 
     }

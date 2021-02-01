@@ -17,7 +17,7 @@
 
     <properties>
         <java.version>1.8</java.version>
-        <vaadin.version>14.1.21</vaadin.version>
+        <vaadin.version>14.4.6</vaadin.version>
     </properties>
 
     <dependencies>
@@ -40,6 +40,19 @@
             <artifactId>assertj-core</artifactId>
             <version>3.18.1</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-core</artifactId>
         </dependency>
         <!-- tag::starter[] -->
         <dependency>

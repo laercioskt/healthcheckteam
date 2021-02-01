@@ -15,7 +15,7 @@ import java.util.Set;
 @Audited
 public class Member extends BaseEntity implements Serializable {
 
-    private String user;
+    private String username;
     private String password;
     private String name;
 
@@ -23,10 +23,10 @@ public class Member extends BaseEntity implements Serializable {
     @JoinTable(name = "member_team",
             joinColumns = {@JoinColumn(name = "member_id")},
             inverseJoinColumns = {@JoinColumn(name = "team_id")})
-    Set<Team> teams = new HashSet<>();
+    private final Set<Team> teams = new HashSet<>();
 
-    public String getUser() {
-        return user;
+    public String getUsername() {
+        return username;
     }
 
     public String getPassword() {
@@ -37,8 +37,8 @@ public class Member extends BaseEntity implements Serializable {
         return name;
     }
 
-    public void setUser(String user) {
-        this.user = user;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public void setPassword(String password) {
@@ -61,13 +61,13 @@ public class Member extends BaseEntity implements Serializable {
 
         private Long id;
 
-        private String user;
+        private String username;
         private String password;
         private String name;
         private Team team;
 
-        public MemberBuilder withUser(String user) {
-            this.user = user;
+        public MemberBuilder withUsername(String username) {
+            this.username = username;
             return this;
         }
 
@@ -96,7 +96,7 @@ public class Member extends BaseEntity implements Serializable {
             if (id != null) {
                 member.setId(id);
             }
-            member.setUser(this.user);
+            member.setUsername(this.username);
             member.setPassword(this.password);
             member.setName(this.name);
             member.addTeam(team);

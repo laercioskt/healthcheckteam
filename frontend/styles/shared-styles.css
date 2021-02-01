@@ -62,6 +62,7 @@ body {
     right: 0;
     bottom: 0;
     height: 100%;
+    width: 30%;
     overflow: auto;
     background: var(--lumo-base-color);
     box-shadow: var(--overlay-box-shadow);

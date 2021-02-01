@@ -4,7 +4,9 @@ import br.com.empresa.healthcheckteam.authentication.AccessControl;
 import br.com.empresa.healthcheckteam.authentication.AccessControlFactory;
 import br.com.empresa.healthcheckteam.ui.about.AboutView;
 import br.com.empresa.healthcheckteam.ui.assessments.AssessmentsView;
+import br.com.empresa.healthcheckteam.ui.members.MembersView;
 import br.com.empresa.healthcheckteam.ui.questoes.QuestoesView;
+import br.com.empresa.healthcheckteam.ui.teams.TeamsView;
 import br.com.empresa.healthcheckteam.ui.times.TimesView;
 import com.vaadin.flow.component.AttachEvent;
 import com.vaadin.flow.component.Component;
@@ -73,7 +75,8 @@ public class MainLayout extends AppLayout implements RouterLayout {
 
         // Navigation items
         addToDrawer(createMenuLink(AssessmentsView.class, AssessmentsView.VIEW_NAME, VaadinIcon.ADJUST.create()));
-        addToDrawer(createMenuLink(TimesView.class, TimesView.VIEW_NAME, VaadinIcon.HAND.create()));
+        addToDrawer(createMenuLink(TeamsView.class, TimesView.VIEW_NAME, VaadinIcon.HAND.create()));
+        addToDrawer(createMenuLink(MembersView.class, MembersView.VIEW_NAME, VaadinIcon.USER.create()));
         addToDrawer(createMenuLink(QuestoesView.class, QuestoesView.VIEW_NAME, VaadinIcon.QUESTION.create()));
 //        addToDrawer(createMenuLink(AnswersView.class, AnswersView.VIEW_NAME, VaadinIcon.REFRESH.create()));
 //        addToDrawer(createMenuLink(HealthCheckTeamView.class, HealthCheckTeamView.VIEW_NAME, VaadinIcon.ENVELOPE.create()));

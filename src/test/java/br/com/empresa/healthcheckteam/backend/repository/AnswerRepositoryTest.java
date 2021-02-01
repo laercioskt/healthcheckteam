@@ -89,7 +89,7 @@ class AnswerRepositoryTest {
     private Member createASimplesMember() {
         Team teamA = createASimpleTeam();
         return memberRepository.save(new Member.MemberBuilder()
-                .withUser("user")
+                .withUsername("user")
                 .withPassword("password")
                 .withName("Member X")
                 .withTeam(teamA)

@@ -25,7 +25,7 @@ class MemberRepositoryTest {
     public void createASimpleMember() {
         Team teamA = createASimpleTeam();
         Member memberX = new MemberBuilder()
-                .withUser("user")
+                .withUsername("user")
                 .withPassword("password")
                 .withName("Member X")
                 .withTeam(teamA)
