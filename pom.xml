@@ -20,6 +20,13 @@
         <vaadin.version>14.4.6</vaadin.version>
     </properties>
 
+    <pluginRepositories>
+        <pluginRepository>
+            <id>repo1</id>
+            <url>https://mvnrepository.com/artifact/com.github.eirslett/frontend-maven-plugin</url>
+        </pluginRepository>
+    </pluginRepositories>
+
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -179,7 +186,7 @@
                         <artifactId>frontend-maven-plugin</artifactId>
                         <!-- Use the latest released version:
                         https://repo1.maven.org/maven2/com/github/eirslett/frontend-maven-plugin/ -->
-                        <version>1.9.1</version>
+                        <version>1.11.0</version>
                         <executions>
                             <execution>
                                 <id>install node and npm</id>
