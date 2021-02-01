@@ -3,6 +3,7 @@ package br.com.empresa.healthcheckteam;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import org.flywaydb.core.Flyway;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
@@ -11,8 +12,9 @@ import javax.sql.DataSource;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+@ConditionalOnProperty(value="springconfig", havingValue="production")
 @Configuration
-public class HCTConfiguration {
+public class ApplicationConfig {
 
     @Bean
     public DataSource dataSource() throws URISyntaxException {

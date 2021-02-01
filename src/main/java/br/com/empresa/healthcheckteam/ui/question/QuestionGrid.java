@@ -1,23 +1,22 @@
-package br.com.empresa.healthcheckteam.ui.questoes;
+package br.com.empresa.healthcheckteam.ui.question;
 
-import br.com.empresa.healthcheckteam.backend.data.Questao;
+import br.com.empresa.healthcheckteam.backend.data2.Question;
 import com.vaadin.flow.component.AttachEvent;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.grid.Grid;
-import com.vaadin.flow.component.notification.Notification;
 
 /**
- * Grid of questoes, handling the visual presentation and filtering of a set of
+ * Grid of questions, handling the visual presentation and filtering of a set of
  * items. This version uses an in-memory data source that is suitable for small
  * data sets.
  */
-public class QuestoesGrid extends Grid<Questao> {
+public class QuestionGrid extends Grid<Question> {
 
-    public QuestoesGrid() {
+    public QuestionGrid() {
 
         setSizeFull();
 
-        addColumn(Questao::getDescricao).setHeader("Question description").setFlexGrow(20).setSortable(true).setKey("descricao");
+        addColumn(Question::getDescription).setHeader("Question description").setFlexGrow(20).setSortable(true).setKey("description");
 
         // If the browser window size changes, check if all columns fit on
         // screen
@@ -27,11 +26,11 @@ public class QuestoesGrid extends Grid<Questao> {
 
     private void setColumnVisibility(int width) {
         if (width > 800) {
-            getColumnByKey("descricao").setVisible(true);
+            getColumnByKey("description").setVisible(true);
         } else if (width > 550) {
-            getColumnByKey("descricao").setVisible(true);
+            getColumnByKey("description").setVisible(true);
         } else {
-            getColumnByKey("descricao").setVisible(true);
+            getColumnByKey("description").setVisible(true);
         }
     }
 
@@ -46,13 +45,12 @@ public class QuestoesGrid extends Grid<Questao> {
         });
     }
 
-    public Questao getSelectedRow() {
-        Notification.show("asdasd");
+    public Question getSelectedRow() {
         return asSingleSelect().getValue();
     }
 
-    public void refresh(Questao questao) {
-        getDataCommunicator().refresh(questao);
+    public void refresh(Question question) {
+        getDataCommunicator().refresh(question);
     }
 
 }

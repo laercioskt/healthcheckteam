@@ -1,9 +1,8 @@
-package br.com.empresa.healthcheckteam.ui.questoes;
+package br.com.empresa.healthcheckteam.ui.question;
 
-import br.com.empresa.healthcheckteam.backend.data.Answer;
-import br.com.empresa.healthcheckteam.backend.data.Questao;
+import br.com.empresa.healthcheckteam.backend.data2.AnswerOption;
+import br.com.empresa.healthcheckteam.backend.data2.Question;
 import br.com.empresa.healthcheckteam.ui.ConfirmDialog;
-import br.com.empresa.healthcheckteam.ui.healthcheckteam.ProductForm;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.KeyModifier;
@@ -16,32 +15,31 @@ import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextArea;
-import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.renderer.ComponentRenderer;
 import com.vaadin.flow.data.value.ValueChangeMode;
 
 /**
- * A form for editing a single questao.
+ * A form for editing a single question.
  */
-public class QuestoesForm extends Div {
+public class QuestionForm extends Div {
 
     private final VerticalLayout content;
 
-    private final TextArea descricao;
-    private final IronList<Answer> answers;
+    private final TextArea description;
+    private final IronList<AnswerOption> answers;
     private final Button newAnswerButton;
     private Button save;
     private Button discard;
     private Button cancel;
     private final Button delete;
 
-    private final QuestoesViewLogic viewLogic;
-    private final Binder<Questao> binder;
-    private Questao currentQuestao;
+    private final QuestionViewLogic viewLogic;
+    private final Binder<Question> binder;
+    private Question currentQuestion;
 
-    public QuestoesForm(QuestoesViewLogic sampleCrudLogic) {
+    public QuestionForm(QuestionViewLogic sampleCrudLogic) {
         setClassName("register-form");
 
         content = new VerticalLayout();
@@ -51,11 +49,11 @@ public class QuestoesForm extends Div {
 
         viewLogic = sampleCrudLogic;
 
-        descricao = new TextArea("Question description");
-        descricao.setWidth("100%");
-        descricao.setRequired(true);
-        descricao.setValueChangeMode(ValueChangeMode.EAGER);
-        content.add(descricao);
+        description = new TextArea("Question description");
+        description.setWidth("100%");
+        description.setRequired(true);
+        description.setValueChangeMode(ValueChangeMode.EAGER);
+        content.add(description);
 
         newAnswerButton = new Button("Add New Answer");
         newAnswerButton.setDisableOnClick(true);
@@ -66,12 +64,13 @@ public class QuestoesForm extends Div {
         content.add(answers);
 
         newAnswerButton.addClickListener(event -> {
-            final Answer answer = new Answer();
-            currentQuestao.getAnswers().add(answer);
-            answers.setItems(currentQuestao.getAnswers());
+            final AnswerOption answer = new AnswerOption();
+            answer.setQuestion(currentQuestion);
+            currentQuestion.getOptions().add(answer);
+            answers.setItems(currentQuestion.getOptions());
         });
 
-        binder = new BeanValidationBinder<>(Questao.class);
+        binder = new BeanValidationBinder<>(Question.class);
         binder.bindInstanceFields(this);
 
         // enable/disable save button while editing
@@ -86,22 +85,22 @@ public class QuestoesForm extends Div {
         save.setWidth("100%");
         save.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         save.addClickListener(event -> {
-            if (currentQuestao != null && binder.writeBeanIfValid(currentQuestao)) {
-                viewLogic.saveQuestao(currentQuestao);
+            if (currentQuestion != null && binder.writeBeanIfValid(currentQuestion)) {
+                viewLogic.saveQuestion(currentQuestion);
             }
         });
         save.addClickShortcut(Key.KEY_S, KeyModifier.CONTROL);
 
         discard = new Button("Discard changes");
         discard.setWidth("100%");
-        discard.addClickListener(event -> viewLogic.editQuestao(currentQuestao));
+        discard.addClickListener(event -> viewLogic.editQuestion(currentQuestion));
 
         cancel = new Button("Cancel");
         cancel.setWidth("100%");
-        cancel.addClickListener(event -> viewLogic.cancelQuestao());
+        cancel.addClickListener(event -> viewLogic.cancelQuestion());
         cancel.addClickShortcut(Key.ESCAPE);
         getElement()
-                .addEventListener("keydown", event -> viewLogic.cancelQuestao())
+                .addEventListener("keydown", event -> viewLogic.cancelQuestion())
                 .setFilter("event.key == 'Escape'");
 
         delete = new Button("Delete");
@@ -109,15 +108,15 @@ public class QuestoesForm extends Div {
         delete.addThemeVariants(ButtonVariant.LUMO_ERROR,
                 ButtonVariant.LUMO_PRIMARY);
         delete.addClickListener(event -> {
-            if (currentQuestao != null) {
-                viewLogic.deleteQuestao(currentQuestao);
+            if (currentQuestion != null) {
+                viewLogic.deleteQuestion(currentQuestion);
             }
         });
 
         content.add(save, discard, delete, cancel);
     }
 
-    private Component createAnswerEditor(Answer answer) {
+    private Component createAnswerEditor(AnswerOption answer) {
         final TextArea answerField = new TextArea();
         answerField.setWidthFull();
         if (answer.getId() < 0) {
@@ -130,8 +129,8 @@ public class QuestoesForm extends Div {
                     "Please confirm",
                     "Are you sure you want to delete the answer?",
                     "Delete", () -> {
-                currentQuestao.getAnswers().remove(answer);
-                answers.setItems(currentQuestao.getAnswers());
+                currentQuestion.getOptions().remove(answer);
+                answers.setItems(currentQuestion.getOptions());
                 Notification.show("Answer Deleted.");
                 save.setEnabled(true);
                 discard.setEnabled(true);
@@ -141,8 +140,8 @@ public class QuestoesForm extends Div {
         });
         deleteButton.addThemeVariants(ButtonVariant.LUMO_ERROR);
 
-        final BeanValidationBinder<Answer> answerBinder = new BeanValidationBinder<>(Answer.class);
-        answerBinder.forField(answerField).bind("answer");
+        final BeanValidationBinder<AnswerOption> answerBinder = new BeanValidationBinder<>(AnswerOption.class);
+        answerBinder.forField(answerField).bind("description");
         answerBinder.setBean(answer);
         answerBinder.addValueChangeListener(event -> {
             if (answerBinder.isValid()) {
@@ -160,15 +159,15 @@ public class QuestoesForm extends Div {
         return layout;
     }
 
-    public void editQuestao(Questao questao) {
-        if (questao == null) {
-            questao = new Questao();
+    public void editQuestion(Question question) {
+        if (question == null) {
+            question = new Question();
         }
-        delete.setVisible(!questao.isNewQuestao());
-        currentQuestao = questao;
-        binder.readBean(questao);
+        delete.setVisible(!question.isNew());
+        currentQuestion = question;
+        binder.readBean(question);
 
-        answers.setItems(questao.getAnswers());
+        answers.setItems(question.getOptions());
     }
 
 }

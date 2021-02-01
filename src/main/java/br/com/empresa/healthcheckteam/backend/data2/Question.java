@@ -1,13 +1,18 @@
 package br.com.empresa.healthcheckteam.backend.data2;
 
 import br.com.empresa.healthcheckteam.backend.data.BaseEntity;
+import br.com.empresa.healthcheckteam.backend.data2.AnswerOption.AnswerOptionBuilder;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+
+import static javax.persistence.CascadeType.ALL;
 
 @Entity
 @Audited
@@ -15,7 +20,7 @@ public class Question extends BaseEntity implements Serializable {
 
     private String description;
 
-    @OneToMany(mappedBy = "question")
+    @OneToMany(mappedBy = "question", cascade = ALL)
     private Set<AnswerOption> options = new HashSet<>();
 
     @OneToMany(mappedBy = "origin")
@@ -46,6 +51,7 @@ public class Question extends BaseEntity implements Serializable {
         private Long id;
 
         private String description;
+        private List<String> answerOption = new ArrayList<>();
 
         public QuestionBuilder() {
         }
@@ -60,14 +66,21 @@ public class Question extends BaseEntity implements Serializable {
             return this;
         }
 
+        public QuestionBuilder withAnswerOption(String answerOption) {
+            this.answerOption.add(answerOption);
+            return this;
+        }
+
         public Question build() {
             Question question = new Question();
             if (id != null)
                 question.setId(id);
             question.setDescription(this.description);
+            answerOption.forEach(ao ->
+                    question.getOptions()
+                            .add(new AnswerOptionBuilder().withQuestion(question).withDescription(ao).build()));
             return question;
         }
-
     }
 
 }
