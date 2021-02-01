@@ -4,6 +4,7 @@ import br.com.empresa.healthcheckteam.backend.data.BaseEntity;
 import br.com.empresa.healthcheckteam.backend.data2.AnswerOption.AnswerOptionBuilder;
 import org.hibernate.envers.Audited;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import java.io.Serializable;
@@ -18,6 +19,7 @@ import static javax.persistence.CascadeType.ALL;
 @Audited
 public class Question extends BaseEntity implements Serializable {
 
+    @Column(length = 1000)
     private String description;
 
     @OneToMany(mappedBy = "question", cascade = ALL)

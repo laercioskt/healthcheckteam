@@ -5,6 +5,7 @@ import br.com.empresa.healthcheckteam.backend.data2.AssessmentAnswerOption.Asses
 import org.hibernate.envers.Audited;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -19,6 +20,7 @@ import static java.util.stream.Collectors.toSet;
 @Audited
 public class AssessmentQuestion extends BaseEntity implements Serializable {
 
+    @Column(length = 1000)
     private String description;
 
     @ManyToOne

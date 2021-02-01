@@ -3,6 +3,7 @@ package br.com.empresa.healthcheckteam.backend.data2;
 import br.com.empresa.healthcheckteam.backend.data.BaseEntity;
 import org.hibernate.envers.Audited;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -15,6 +16,7 @@ import java.util.Set;
 @Audited
 public class AnswerOption extends BaseEntity implements Serializable {
 
+    @Column(length = 1000)
     private String description;
 
     @ManyToOne

@@ -23,7 +23,7 @@ public class MockDataGenerator {
 
     private static final String[] timesNames = new String[]{"XTeam", "UX", "DevOps", "Ame Digital", "Claro"};
 
-    private static final Map<String, String[]> questoesDescricoes = new HashMap<String, String[]>() {{
+    public static final Map<String, String[]> questoesDescricoes = new HashMap<String, String[]>() {{
         put("Motivação e Propósito: O time está motivado? As pessoas estão engajadas? As pessoas entendem o propósito do seu trabalho? Sinto que...",
                 new String[]{"O time está desmotivado",
                         "O time quase nunca está motivado",
