@@ -88,27 +88,43 @@
     <!-- end::bom[] -->
 
     <build>
+        <defaultGoal>spring-boot:run</defaultGoal>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
+                <!--suppress MavenModelInspection -->
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <!-- Clean build and startup time for Vaadin apps sometimes may exceed
+                     the default Spring Boot's 30sec timeout.  -->
+                <configuration>
+                    <wait>500</wait>
+                    <maxAttempts>240</maxAttempts>
+                    <jvmArguments>
+                        --enable-preview -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005
+                    </jvmArguments>
+                </configuration>
             </plugin>
             <plugin>
-                <groupId>com.github.eirslett</groupId>
-                <artifactId>frontend-maven-plugin</artifactId>
-                <version>1.8.0</version>
+                <groupId>org.flywaydb</groupId>
+                <artifactId>flyway-maven-plugin</artifactId>
+            </plugin>
+
+            <!--
+                Take care of synchronizing java dependencies and imports in
+                package.json and main.js files.
+                It also creates webpack.config.js if not exists yet.
+            -->
+            <plugin>
+                <groupId>com.vaadin</groupId>
+                <artifactId>vaadin-maven-plugin</artifactId>
+                <version>${vaadin.version}</version>
                 <executions>
                     <execution>
-                        <id>install node and npm</id>
                         <goals>
-                            <goal>install-node-and-npm</goal>
+                            <goal>prepare-frontend</goal>
                         </goals>
-                        <phase>generate-resources</phase>
                     </execution>
                 </executions>
-                <configuration>
-                    <nodeVersion>v10.16.2</nodeVersion>
-                </configuration>
             </plugin>
             <!-- Heroku Maven Plugin Configuration -->
             <plugin>
@@ -116,7 +132,7 @@
                 <artifactId>heroku-maven-plugin</artifactId>
                 <version>2.0.3</version>
                 <configuration>
-                    <appName>healthcheckteam</appName>
+                    <appName>provento</appName>
                     <includeTarget>false</includeTarget>
                     <includes>
                         <include>${project.build.directory}/${project.build.finalName}.jar</include>
@@ -130,10 +146,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>9</source>
-                    <target>9</target>
-                </configuration>
                 <executions>
                     <execution>
                         <id>compile</id>
@@ -150,6 +162,9 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <artifactId>maven-surefire-plugin</artifactId>
             </plugin>
         </plugins>
     </build>
@@ -183,20 +198,25 @@
             </build>
         </profile>
         <profile>
+            <!-- Production mode is activated using -Pproduction -->
             <id>production</id>
             <properties>
                 <vaadin.productionMode>true</vaadin.productionMode>
             </properties>
+
             <dependencies>
                 <dependency>
                     <groupId>com.vaadin</groupId>
+                    <!--suppress MavenModelInspection -->
                     <artifactId>flow-server-production-mode</artifactId>
                 </dependency>
             </dependencies>
+
             <build>
                 <plugins>
                     <plugin>
                         <groupId>org.springframework.boot</groupId>
+                        <!--suppress MavenModelInspection -->
                         <artifactId>spring-boot-maven-plugin</artifactId>
                         <configuration>
                             <jvmArguments>-Dvaadin.productionMode</jvmArguments>
@@ -209,23 +229,11 @@
                         <executions>
                             <execution>
                                 <goals>
-                                    <goal>prepare-frontend</goal>
                                     <goal>build-frontend</goal>
                                 </goals>
                                 <phase>compile</phase>
                             </execution>
                         </executions>
-                    </plugin>
-                    <plugin>
-                        <groupId>com.heroku.sdk</groupId>
-                        <artifactId>heroku-maven-plugin</artifactId>
-                        <version>2.0.13</version>
-                        <configuration>
-                            <processTypes>
-                                <web>java $JAVA_OPTS -jar -Dserver.port=$PORT target/healthcheckteam-0.0.1-SNAPSHOT.jar
-                                </web>
-                            </processTypes>
-                        </configuration>
                     </plugin>
                 </plugins>
             </build>
