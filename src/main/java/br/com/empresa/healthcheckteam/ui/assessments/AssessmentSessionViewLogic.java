@@ -2,11 +2,12 @@ package br.com.empresa.healthcheckteam.ui.assessments;
 
 import br.com.empresa.healthcheckteam.authentication.AccessControl;
 import br.com.empresa.healthcheckteam.authentication.AccessControlFactory;
-import br.com.empresa.healthcheckteam.backend.DataService;
-import br.com.empresa.healthcheckteam.backend.data.Assessment;
+import br.com.empresa.healthcheckteam.backend.data2.Assessment;
+import br.com.empresa.healthcheckteam.backend.repository.AssessmentRepository;
 import com.vaadin.flow.component.UI;
 
 import java.io.Serializable;
+import java.util.Optional;
 
 /**
  * This class provides an interface for the logical operations between the CRUD
@@ -17,11 +18,13 @@ import java.io.Serializable;
  * the system separately, and to e.g. provide alternative views for the same
  * data.
  */
-public class AssessmentsViewLogic implements Serializable {
+public class AssessmentSessionViewLogic implements Serializable {
 
-    private final AssessmentsView view;
+    private final AssessmentRepository assessmentRepository;
+    private final AssessmentSessionView view;
 
-    public AssessmentsViewLogic(AssessmentsView simpleCrudView) {
+    public AssessmentSessionViewLogic(AssessmentRepository assessmentRepository, AssessmentSessionView simpleCrudView) {
+        this.assessmentRepository = assessmentRepository;
         view = simpleCrudView;
     }
 
@@ -54,7 +57,7 @@ public class AssessmentsViewLogic implements Serializable {
             fragmentParameter = assessmentId;
         }
 
-        UI.getCurrent().navigate(AssessmentsView.class, fragmentParameter);
+        UI.getCurrent().navigate(AssessmentSessionView.class, fragmentParameter);
     }
 
     /**
@@ -70,13 +73,10 @@ public class AssessmentsViewLogic implements Serializable {
             if (assessmentId.equals("new")) {
                 newAssessment();
             } else {
-                // Ensure this is selected even if coming directly here from
-                // login
+                // Ensure this is selected even if coming directly here from login
                 try {
-                    final int pid = Integer.parseInt(assessmentId);
-                    final Assessment assessment = findAssessment(pid);
-                    view.selectRow(assessment);
-                } catch (final NumberFormatException e) {
+                    findAssessment(Long.parseLong(assessmentId)).ifPresent(view::selectRow);
+                } catch (final NumberFormatException ignored) {
                 }
             }
         } else {
@@ -84,23 +84,23 @@ public class AssessmentsViewLogic implements Serializable {
         }
     }
 
-    private Assessment findAssessment(int assessmentId) {
-        return DataService.get().getAssessmentById(assessmentId);
+    private Optional<Assessment> findAssessment(Long assessmentId) {
+        return assessmentRepository.findById(assessmentId);
     }
 
     public void saveAssessment(Assessment assessment) {
-        final boolean newAssessment = assessment.isNewAssessment();
+        final boolean newAssessment = assessment.isNew();
         view.clearSelection();
         view.updateAssessment(assessment);
         setFragmentParameter("");
-        view.showNotification(assessment.getAssessmentName() + (newAssessment ? " created" : " updated"));
+        view.showNotification(assessment.getDescription() + (newAssessment ? " created" : " updated"));
     }
 
     public void deleteAssessment(Assessment assessment) {
         view.clearSelection();
         view.removeAssessment(assessment);
         setFragmentParameter("");
-        view.showNotification(assessment.getAssessmentName() + " removed");
+        view.showNotification(assessment.getDescription() + " removed");
     }
 
     public void editAssessment(Assessment assessment) {

@@ -11,9 +11,9 @@ import com.vaadin.flow.component.notification.Notification;
  * items. This version uses an in-memory data source that is suitable for small
  * data sets.
  */
-public class AssessmentsGrid extends Grid<Assessment> {
+public class AssessmentSessionGrid extends Grid<Assessment> {
 
-    public AssessmentsGrid() {
+    public AssessmentSessionGrid() {
 
         setSizeFull();
 

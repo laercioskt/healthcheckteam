@@ -1,8 +1,7 @@
-package br.com.empresa.healthcheckteam.ui.assessments;
+package br.com.empresa.healthcheckteam.ui.assessment;
 
-import br.com.empresa.healthcheckteam.backend.DataService;
-import br.com.empresa.healthcheckteam.backend.data.Assessment;
-import br.com.empresa.healthcheckteam.backend.data.Time;
+import br.com.empresa.healthcheckteam.backend.data2.Assessment;
+import br.com.empresa.healthcheckteam.backend.repository.AssessmentRepository;
 import com.vaadin.flow.data.provider.ListDataProvider;
 
 import java.util.Locale;
@@ -10,20 +9,22 @@ import java.util.Objects;
 
 /**
  * Utility class that encapsulates filtering and CRUD operations for
- * {@link Time} entities.
+ * {@link Assessment} entities.
  * <p>
- * Used to simplify the code in {@link AssessmentsView} and
- * {@link AssessmentsViewLogic}.
+ * Used to simplify the code in {@link AssessmentView} and
+ * {@link AssessmentViewLogic}.
  */
-public class AssessmentsDataProvider extends ListDataProvider<Assessment> {
+public class AssessmentDataProvider extends ListDataProvider<Assessment> {
 
     /**
      * Text filter that can be changed separately.
      */
     private String filterText = "";
+    private final AssessmentRepository assessmentRepository;
 
-    public AssessmentsDataProvider() {
-        super(DataService.get().getAllAssessments());
+    public AssessmentDataProvider(AssessmentRepository assessmentRepository) {
+        super(assessmentRepository.findAll());
+        this.assessmentRepository = assessmentRepository;
     }
 
     /**
@@ -32,10 +33,12 @@ public class AssessmentsDataProvider extends ListDataProvider<Assessment> {
      * @param assessment the updated or new assessment
      */
     public void save(Assessment assessment) {
-        final boolean newAssessment = assessment.isNewAssessment();
+        final boolean newAssessment = assessment.isNew();
 
-        DataService.get().updateAssessment(assessment);
+        assessmentRepository.save(assessment);
         if (newAssessment) {
+            getItems().clear();
+            getItems().addAll(assessmentRepository.findAll());
             refreshAll();
         } else {
             refreshItem(assessment);
@@ -48,7 +51,9 @@ public class AssessmentsDataProvider extends ListDataProvider<Assessment> {
      * @param assessment the assessment to be deleted
      */
     public void delete(Assessment assessment) {
-        DataService.get().deleteAssessment(assessment.getId());
+        assessmentRepository.delete(assessment);
+        getItems().clear();
+        getItems().addAll(assessmentRepository.findAll());
         refreshAll();
     }
 
@@ -66,11 +71,11 @@ public class AssessmentsDataProvider extends ListDataProvider<Assessment> {
         }
         this.filterText = filterText.trim().toLowerCase(Locale.ENGLISH);
 
-        setFilter(assessment -> passesFilter(assessment.getAssessmentName(), this.filterText));
+        setFilter(assessment -> passesFilter(assessment.getDescription(), this.filterText));
     }
 
     @Override
-    public Integer getId(Assessment assessment) {
+    public Long getId(Assessment assessment) {
         Objects.requireNonNull(assessment, "Cannot provide an id for a null assessment.");
 
         return assessment.getId();

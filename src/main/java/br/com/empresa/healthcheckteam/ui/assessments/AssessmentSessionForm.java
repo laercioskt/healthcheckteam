@@ -1,8 +1,8 @@
 package br.com.empresa.healthcheckteam.ui.assessments;
 
-import br.com.empresa.healthcheckteam.backend.DataService;
-import br.com.empresa.healthcheckteam.backend.data.Assessment;
-import br.com.empresa.healthcheckteam.backend.data.Questao;
+import br.com.empresa.healthcheckteam.backend.data2.Assessment;
+import br.com.empresa.healthcheckteam.backend.data2.AssessmentQuestion;
+import br.com.empresa.healthcheckteam.backend.repository.AssessmentRepository;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.html.Div;
@@ -11,34 +11,30 @@ import java.util.ArrayList;
 import java.util.ListIterator;
 
 @CssImport("./styles/assessment-form.css")
-public class AssessmentForm extends Div {
-
-//    private final VerticalLayout content;
+public class AssessmentSessionForm extends Div {
 
     private Button next;
     private Button discard;
     private Button cancel;
-//    private final Button previous;
 
-    //    private final Binder<Assessment> binder;
     private Assessment currentAssessment;
 
-//    private final AssessmentsViewLogic viewLogic;
+    private ListIterator<AssessmentQuestion> questoes;
+    private AssessmentSessionViewLogic sampleCrudLogic;
 
-    private final ListIterator<Questao> questoes;
-
-    public AssessmentForm(AssessmentsViewLogic sampleCrudLogic) {
+    public AssessmentSessionForm(AssessmentRepository assessmentRepository, AssessmentSessionViewLogic sampleCrudLogic) {
+        this.sampleCrudLogic = sampleCrudLogic;
         setClassName("register-form");
 
-        questoes = new ArrayList<>(DataService.get().getAllQuestoes()).listIterator();
-        if (!questoes.hasNext())
-            throw new IllegalArgumentException("Assessment without questions registered");
-
-        Questao next = questoes.next();
-        boolean hasPrevious = questoes.hasPrevious();
-        boolean hasNext = questoes.hasNext();
-        add(getAssessmentLayout(sampleCrudLogic, next, hasPrevious, hasNext));
-
+//        questoes = new ArrayList<>(sampleCrudLogic.getQuestions()).listIterator();
+//        if (!questoes.hasNext())
+//            throw new IllegalArgumentException("Assessment without questions registered");
+//
+//        Questao next = questoes.next();
+//        boolean hasPrevious = questoes.hasPrevious();
+//        boolean hasNext = questoes.hasNext();
+//        add(getAssessmentLayout(sampleCrudLogic, next, hasPrevious, hasNext));
+//
 //        content = new VerticalLayout();
 //        content.setSizeUndefined();
 //        content.addClassName("register-form-content");
@@ -102,33 +98,33 @@ public class AssessmentForm extends Div {
 //        content.add(this.next, previous, cancel);
     }
 
-    private AssessmentLayout getAssessmentLayout(AssessmentsViewLogic sampleCrudLogic, Questao questao, boolean hasPrevious, boolean hasNext) {
-        AssessmentLayout assessmentLayout = new AssessmentLayout(questao, sampleCrudLogic, hasPrevious, hasNext);
+    private AssessmentSessionLayout getAssessmentLayout(AssessmentSessionViewLogic sampleCrudLogic, AssessmentQuestion questao, boolean hasPrevious, boolean hasNext) {
+        AssessmentSessionLayout assessmentSessionLayout = new AssessmentSessionLayout(questao, sampleCrudLogic, hasPrevious, hasNext);
 
-        assessmentLayout.addNextListener(() -> {
+        assessmentSessionLayout.addNextListener(() -> {
             removeAll();
             if (!questoes.hasNext())
                 throw new IllegalArgumentException("There is no questions after that");
 
-            Questao next = questoes.next();
+            AssessmentQuestion next = questoes.next();
             boolean nextHasNext = questoes.hasNext();
             add(getAssessmentLayout(sampleCrudLogic, next, true, nextHasNext));
         });
 
-        assessmentLayout.addPreviousListener(() -> {
+        assessmentSessionLayout.addPreviousListener(() -> {
             removeAll();
             if (!questoes.hasPrevious())
                 throw new IllegalArgumentException("There is no questions before that");
 
-            Questao previous = questoes.previous();
+            AssessmentQuestion previous = questoes.previous();
             boolean previousHasPrevious = questoes.hasPrevious();
             add(getAssessmentLayout(sampleCrudLogic, previous, previousHasPrevious, true));
         });
 
-        assessmentLayout.addDoneListener(() -> {
+        assessmentSessionLayout.addDoneListener(() -> {
         });
 
-        return assessmentLayout;
+        return assessmentSessionLayout;
     }
 
     public void editAssessment(Assessment assessment) {
@@ -138,6 +134,15 @@ public class AssessmentForm extends Div {
 //        previous.setVisible(!assessment.isNewAssessment());
         currentAssessment = assessment;
 //        binder.readBean(assessment);
+
+        questoes = new ArrayList<>(currentAssessment.getQuestions()).listIterator();
+        if (!questoes.hasNext())
+            throw new IllegalArgumentException("Assessment without questions registered");
+
+        AssessmentQuestion next = questoes.next();
+        boolean hasPrevious = questoes.hasPrevious();
+        boolean hasNext = questoes.hasNext();
+        add(getAssessmentLayout(sampleCrudLogic, next, hasPrevious, hasNext));
     }
 
 }

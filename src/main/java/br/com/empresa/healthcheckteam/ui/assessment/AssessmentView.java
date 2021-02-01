@@ -1,7 +1,9 @@
-package br.com.empresa.healthcheckteam.ui.assessments;
+package br.com.empresa.healthcheckteam.ui.assessment;
 
-import br.com.empresa.healthcheckteam.backend.DataService;
-import br.com.empresa.healthcheckteam.backend.data.Assessment;
+import br.com.empresa.healthcheckteam.backend.data2.Assessment;
+import br.com.empresa.healthcheckteam.backend.repository.AssessmentRepository;
+import br.com.empresa.healthcheckteam.backend.repository.QuestionRepository;
+import br.com.empresa.healthcheckteam.backend.repository.TeamRepository;
 import br.com.empresa.healthcheckteam.ui.MainLayout;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.KeyModifier;
@@ -12,45 +14,46 @@ import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
-import com.vaadin.flow.router.*;
+import com.vaadin.flow.router.BeforeEvent;
+import com.vaadin.flow.router.HasUrlParameter;
+import com.vaadin.flow.router.OptionalParameter;
+import com.vaadin.flow.router.Route;
+import com.vaadin.flow.router.RouteAlias;
 
 /**
  * A view for performing create-read-update-delete operations on 'assessment'.
  * <p>
- * See also {@link AssessmentsViewLogic} for fetching the data, the actual CRUD
+ * See also {@link AssessmentViewLogic} for fetching the data, the actual CRUD
  * operations and controlling the view based on events from outside.
  */
-@Route(value = "AssessmentsView", layout = MainLayout.class)
-@RouteAlias(value = "", layout = MainLayout.class)
-public class AssessmentsView extends HorizontalLayout implements HasUrlParameter<String> {
+@Route(value = "Assessments", layout = MainLayout.class)
+@RouteAlias(value = "Assessments", layout = MainLayout.class)
+public class AssessmentView extends HorizontalLayout implements HasUrlParameter<String> {
 
     public static final String VIEW_NAME = "Assessments";
 
-    //    private final AssessmentsGrid grid;
+    private final AssessmentGrid grid;
     private final AssessmentForm form;
     private TextField filter;
 
-    private final AssessmentsViewLogic viewLogic = new AssessmentsViewLogic(this);
+    private final AssessmentViewLogic viewLogic; // = new AssessmentsViewLogic(this);
     private Button newAssessment;
 
-    private final AssessmentsDataProvider dataProvider = new AssessmentsDataProvider();
+    private final AssessmentDataProvider dataProvider; // = new AssessmentsDataProvider();
 
-    public AssessmentsView() {
+    public AssessmentView(AssessmentRepository assessmentRepository, TeamRepository teamRepository, QuestionRepository questionRepository) {
+
+        viewLogic = new AssessmentViewLogic(assessmentRepository,this);
+        dataProvider = new AssessmentDataProvider(assessmentRepository);
+
         // Sets the width and the height of InventoryView to "100%".
         setSizeFull();
         final HorizontalLayout topLayout = createTopBar();
-        VerticalLayout grid = new VerticalLayout();
-//        grid.setDataProvider(dataProvider);
-        grid.setWidthFull();
-        grid.setPadding(true);
-        grid.add(getAvaliacaoItem("Nova Avaliação", null));
-        DataService.get().getAllAssessments().forEach(assessment -> {
-            grid.add(getAvaliacaoItem(assessment.getAssessmentName(), assessment));
-        });
-
+        grid = new AssessmentGrid();
+        grid.setDataProvider(dataProvider);
         // Allows user to select a single row in the grid.
-//        grid.asSingleSelect().addValueChangeListener(event -> viewLogic.rowSelected(event.getValue()));
-        form = new AssessmentForm(viewLogic);
+        grid.asSingleSelect().addValueChangeListener(event -> viewLogic.rowSelected(event.getValue()));
+        form = new AssessmentForm(viewLogic, teamRepository, questionRepository);
         final VerticalLayout barAndGridLayout = new VerticalLayout();
         barAndGridLayout.add(topLayout);
         barAndGridLayout.add(grid);
@@ -63,20 +66,6 @@ public class AssessmentsView extends HorizontalLayout implements HasUrlParameter
         add(form);
 
         viewLogic.init();
-    }
-
-    private Button getAvaliacaoItem(String text, final Assessment assessment) {
-        Button h1 = new Button(text);
-        h1.setWidthFull();
-        h1.setHeight("5em");
-        h1.addClickListener(buttonClickEvent -> {
-            if (assessment != null){
-                viewLogic.rowSelected(assessment);
-            } else {
-                viewLogic.newAssessment();
-            }
-        });
-        return h1;
     }
 
     public HorizontalLayout createTopBar() {
@@ -132,7 +121,7 @@ public class AssessmentsView extends HorizontalLayout implements HasUrlParameter
      * Deselects the selected row in the grid.
      */
     public void clearSelection() {
-//        grid.getSelectionModel().deselectAll();
+        grid.getSelectionModel().deselectAll();
     }
 
     /**
@@ -141,7 +130,7 @@ public class AssessmentsView extends HorizontalLayout implements HasUrlParameter
      * @param row
      */
     public void selectRow(Assessment row) {
-//        grid.getSelectionModel().select(row);
+        grid.getSelectionModel().select(row);
     }
 
     /**
@@ -183,8 +172,8 @@ public class AssessmentsView extends HorizontalLayout implements HasUrlParameter
     }
 
     @Override
-    public void setParameter(BeforeEvent event, @OptionalParameter String parameter) {
+    public void setParameter(BeforeEvent event,
+                             @OptionalParameter String parameter) {
         viewLogic.enter(parameter);
     }
-
 }

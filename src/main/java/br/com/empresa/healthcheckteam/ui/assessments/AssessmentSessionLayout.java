@@ -1,8 +1,8 @@
 package br.com.empresa.healthcheckteam.ui.assessments;
 
-import br.com.empresa.healthcheckteam.backend.data.Answer;
 import br.com.empresa.healthcheckteam.backend.data.Assessment;
-import br.com.empresa.healthcheckteam.backend.data.Questao;
+import br.com.empresa.healthcheckteam.backend.data2.AssessmentAnswerOption;
+import br.com.empresa.healthcheckteam.backend.data2.AssessmentQuestion;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.KeyModifier;
 import com.vaadin.flow.component.button.Button;
@@ -15,9 +15,7 @@ import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.renderer.ComponentRenderer;
 
-import java.util.function.Consumer;
-
-public class AssessmentLayout extends VerticalLayout {
+public class AssessmentSessionLayout extends VerticalLayout {
 
     private Button next;
     private Button discard;
@@ -28,27 +26,28 @@ public class AssessmentLayout extends VerticalLayout {
 
 //    private final AssessmentsViewLogic viewLogic;
 
-    private Questao currentQuestao;
+    private AssessmentQuestion currentQuestion;
 
     private AssessmentLayoutListener nextListener;
     private AssessmentLayoutListener previousListener;
     private AssessmentLayoutListener doneListener;
 
-    public AssessmentLayout(Questao questao, AssessmentsViewLogic sampleCrudLogic, boolean hasPrevious, boolean hasNext) {
-        currentQuestao = questao;
+    public AssessmentSessionLayout(AssessmentQuestion question, AssessmentSessionViewLogic sampleCrudLogic, boolean hasPrevious, boolean hasNext) {
+        currentQuestion = question;
 
         setSizeUndefined();
         addClassName("register-form-content");
 
 //        viewLogic = sampleCrudLogic;
 
-        add(new H2(questao.getDescricao()));
+        add(new H2(question.getDescription()));
 
-        RadioButtonGroup<Answer> sample = new RadioButtonGroup<>();
-        sample.setItems(questao.getAnswers());
+        RadioButtonGroup<AssessmentAnswerOption> sample = new RadioButtonGroup<>();
+        sample.setItems(question.getOptions());
         sample.setRenderer(new ComponentRenderer<>(item -> {
-            Span span = new Span(item.getAnswer());
-            span.addClassName("answer-" + item.getOrder());
+            Span span = new Span(item.getDescription());
+            // TODO to color
+            // span.addClassName("answer-" + item.getOrder());
             return span;
         }));
         add(sample);

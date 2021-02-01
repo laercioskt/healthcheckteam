@@ -14,6 +14,8 @@ import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
+import static java.lang.String.format;
+import static java.time.format.DateTimeFormatter.ofPattern;
 import static java.util.stream.Collectors.toSet;
 
 @Entity
@@ -51,6 +53,10 @@ public class Assessment extends BaseEntity implements Serializable {
 
     public void setQuestions(Set<AssessmentQuestion> questions) {
         this.questions = questions;
+    }
+
+    public String getDescription() {
+        return format("Team: %s - Date: %s", getTeam().getName(), getCreated().format(ofPattern("dd/MM/yyyy")));
     }
 
     public static class AssessmentBuilder {
