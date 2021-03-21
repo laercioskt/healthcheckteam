@@ -19,7 +19,7 @@ public class AssessmentSessionLayout extends VerticalLayout {
 
     private Button next;
     private Button discard;
-    private Button cancel;
+    private Button done;
     private final Button previous;
 
     private final Binder<Assessment> binder;
@@ -42,15 +42,15 @@ public class AssessmentSessionLayout extends VerticalLayout {
 
         add(new H2(question.getDescription()));
 
-        RadioButtonGroup<AssessmentAnswerOption> sample = new RadioButtonGroup<>();
-        sample.setItems(question.getOptions());
-        sample.setRenderer(new ComponentRenderer<>(item -> {
+        RadioButtonGroup<AssessmentAnswerOption> options = new RadioButtonGroup<>();
+        options.setItems(question.getOptions());
+        options.setRenderer(new ComponentRenderer<>(item -> {
             Span span = new Span(item.getDescription());
             // TODO to color
             // span.addClassName("answer-" + item.getOrder());
             return span;
         }));
-        add(sample);
+        add(options);
 
         binder = new BeanValidationBinder<>(Assessment.class);
 
@@ -89,18 +89,18 @@ public class AssessmentSessionLayout extends VerticalLayout {
             previousListener.action();
         });
 
-        cancel = new Button("Back to Main");
-        cancel.setWidth("100%");
-        cancel.addClickListener(event -> {
+        done = new Button("Back to Main");
+        done.setWidth("100%");
+        done.addClickListener(event -> {
 //            viewLogic.cancelAssessment()
             doneListener.action();
         });
-        cancel.addClickShortcut(Key.ESCAPE);
+        done.addClickShortcut(Key.ESCAPE);
 //        getElement()
 //                .addEventListener("keydown", event -> viewLogic.cancelAssessment())
 //                .setFilter("event.key == 'Escape'");
 
-        add(this.next, previous, cancel);
+        add(this.next, previous, done);
 
     }
 
@@ -116,7 +116,6 @@ public class AssessmentSessionLayout extends VerticalLayout {
 
     public void addDoneListener(AssessmentLayoutListener done) {
         doneListener = done;
-//        done.action();
     }
 
     @FunctionalInterface

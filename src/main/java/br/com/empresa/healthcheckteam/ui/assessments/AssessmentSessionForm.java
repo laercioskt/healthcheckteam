@@ -45,8 +45,7 @@ public class AssessmentSessionForm extends Div {
             add(getAssessmentLayout(sampleCrudLogic, previous, previousHasPrevious, true));
         });
 
-        layout.addDoneListener(() -> {
-        });
+        layout.addDoneListener(sampleCrudLogic::cancelAssessment);
 
         return layout;
     }
