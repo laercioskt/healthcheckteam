@@ -9,6 +9,7 @@ public interface AccessControl extends Serializable {
 
     String ADMIN_ROLE_NAME = "admin";
     String ADMIN_USERNAME = "admin";
+    String USER_ROLE_NAME = "user";
 
     boolean signIn(String username, String password);
 

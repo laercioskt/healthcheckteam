@@ -119,7 +119,7 @@ public class AssessmentSessionViewLogic implements Serializable {
     }
 
     public void rowSelected(Assessment assessment) {
-        if (AccessControlFactory.getInstance().createAccessControl().isUserInRole(AccessControl.ADMIN_ROLE_NAME)) {
+        if (AccessControlFactory.getInstance().createAccessControl().isUserInRole(AccessControl.USER_ROLE_NAME)) {
             editAssessment(assessment);
         }
     }
